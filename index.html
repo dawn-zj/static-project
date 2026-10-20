@@ -84,6 +84,16 @@
     .modal-header h3 { margin: 0; font-size: 16px; }
     .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 0 5px;}
     .close-btn:hover { color: var(--ink); }
+
+    /* 框选操作区（删除按钮） */
+    #modalActions { padding: 12px 20px; display: none; }
+    #deleteSelectionBtn {
+      width: 100%; padding: 10px; border-radius: 9px; font: inherit;
+      background: #fdecea; color: #b4232f; border: 1px solid #f5c6c6;
+      font-weight: 700; cursor: pointer; transition: all .2s;
+    }
+    #deleteSelectionBtn:hover { background: #fbd9d5; border-color: #e9a8a2; }
+
     .palette-grid {
       padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
       gap: 12px; overflow-y: auto; flex: 1;
@@ -133,7 +143,7 @@
     <div class="preview-head">
       <div>
         <h2 style="margin:0">② 图纸预览</h2>
-        <small id="previewInfo">生成后可滚动查看。拖动框选多个格子批量改色，单击单个格子单独改色，点击下方【图例】可全局替换。</small>
+        <small id="previewInfo">生成后可滚动查看。拖动框选多个格子批量改色或删除，单击单个格子单独改色，点击下方【图例】可全局替换。</small>
       </div>
       <div class="preview-actions"><button id="fit">适应窗口</button></div>
     </div>
@@ -151,6 +161,9 @@
     <div class="modal-header">
       <h3 id="modalTitle">选择颜色</h3>
       <button class="close-btn" onclick="closeColorPicker()">×</button>
+    </div>
+    <div id="modalActions">
+      <button id="deleteSelectionBtn">🗑 删除选中格子</button>
     </div>
     <div id="paletteGrid" class="palette-grid"></div>
   </div>
@@ -231,7 +244,6 @@
     return (la[0]-lb[0])**2+(la[1]-lb[1])**2+(la[2]-lb[2])**2;
   }
   function nearest(rgb,pal){let best=pal[0],d=Infinity;for(const p of pal){const q=dist(rgb,p.rgb);if(q<d){d=q;best=p}}return best}
-  function rgbHex(rgb){return '#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase()}
 
   function buildGrid(img,longSide,k,dither){
     const w=img.naturalWidth,h=img.naturalHeight, cols=w>=h?longSide:Math.max(1,Math.round(longSide*w/h)), rows=h>w?longSide:Math.max(1,Math.round(longSide*h/w));
@@ -281,7 +293,7 @@
     for(let y=0;y<result.rows;y++)for(let x=0;x<result.cols;x++){
       const idx = y*result.cols+x;
       let p=result.grid[idx];
-      if(result.hiddenCells.has(idx)) continue; // 该格子被隐藏，跳过绘制（留白，网格线仍保留）
+      if(result.hiddenCells.has(idx)) continue; // 该格子被隐藏/删除，跳过绘制（留白，网格线仍保留）
 
       let xx=left+x*cell,yy=top+y*cell;
       ctx.fillStyle=p.hex;ctx.fillRect(xx,yy,cell,cell);
@@ -478,7 +490,7 @@
       return;
     }
 
-    // 拖拽：批量改色
+    // 拖拽：批量改色 / 删除
     const c1 = clampCell(selection.startCol, selection.startRow);
     const c2 = clampCell(selection.endCol, selection.endRow);
     const col1 = Math.min(c1.col, c2.col), col2 = Math.max(c1.col, c2.col);
@@ -562,7 +574,7 @@
     editMode = 'selection';
     editTarget = { r1, r2, col1, col2 };
     const count = (r2 - r1 + 1) * (col2 - col1 + 1);
-    buildColorPickerUI(`修改选中的 ${count} 个格子（行 ${r1+1}-${r2+1}，列 ${col1+1}-${col2+1}）`);
+    buildColorPickerUI(`选中的 ${count} 个格子（行 ${r1+1}-${r2+1}，列 ${col1+1}-${col2+1}）：选择新颜色或删除`);
   }
 
   function buildColorPickerUI(title) {
@@ -577,6 +589,19 @@
       item.onclick = () => applyColor(p);
       grid.appendChild(item);
     });
+
+    // 框选模式下显示「删除选中格子」按钮
+    const actions = $('modalActions');
+    const delBtn = $('deleteSelectionBtn');
+    if (editMode === 'selection') {
+      const { r1, r2, col1, col2 } = editTarget;
+      const count = (r2 - r1 + 1) * (col2 - col1 + 1);
+      actions.style.display = 'block';
+      delBtn.textContent = `🗑 删除选中的 ${count} 个格子`;
+      delBtn.onclick = applyDeleteSelection;
+    } else {
+      actions.style.display = 'none';
+    }
   }
 
   function closeColorPicker() {
@@ -617,12 +642,27 @@
     closeColorPicker();
   }
 
+  /* 框选删除：把选区内所有格子标记为隐藏（不绘制、不计入统计） */
+  function applyDeleteSelection() {
+    if (!currentResult || editMode !== 'selection') return;
+    const { r1, r2, col1, col2 } = editTarget;
+    for (let r = r1; r <= r2; r++) {
+      for (let c = col1; c <= col2; c++) {
+        const idx = r * currentResult.cols + c;
+        currentResult.hiddenCells.add(idx);
+      }
+    }
+    selectionActive = false;
+    recomputeAndRender();
+    closeColorPicker();
+  }
+
   function recomputeAndRender() {
     selectionActive = false;
     currentResult.counts = {};
     let visiblePieces = 0;
 
-    // 只统计未被隐藏的格子（按格子索引判断）
+    // 只统计未被隐藏（删除）的格子
     currentResult.grid.forEach((p, idx) => {
       if (!currentResult.hiddenCells.has(idx)) {
         currentResult.counts[p.id] = (currentResult.counts[p.id] || 0) + 1;
@@ -640,7 +680,7 @@
 
     $('statColors').textContent = currentResult.used.length;
     $('statCount').textContent = visiblePieces.toLocaleString();
-    $('previewInfo').textContent = `${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
+    $('previewInfo').textContent = `${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色 / 删除`;
   }
 
   $('generate').onclick=()=>{
@@ -654,7 +694,7 @@
       $('statColors').textContent=currentResult.used.length;
       const visiblePieces = currentResult.grid.filter((p, idx) => !currentResult.hiddenCells.has(idx)).length;
       $('statCount').textContent=visiblePieces.toLocaleString();
-      $('previewInfo').textContent=`${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
+      $('previewInfo').textContent=`${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色 / 删除`;
 
       currentResult.used.sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
       renderLegend(currentResult);
