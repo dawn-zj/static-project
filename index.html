@@ -1,154 +1,149 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>拼豆图纸生成器</title>
-<style>
-:root{--bg:#f5f6f8;--panel:#fff;--ink:#18202b;--muted:#657184;--line:#dce1e8;--accent:#b4232f}
-*{box-sizing:border-box}
-html, body { height: 100%; margin: 0; }
-body {
-  background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
-  display: flex; flex-direction: column; height: 100vh; overflow: hidden;
-}
-header {
-  padding: 22px clamp(16px,4vw,42px); background: #fff; border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-h1 { margin: 0; font-size: clamp(22px,3vw,30px); }
-header p { margin: 6px 0 0; color: var(--muted); }
-main {
-  flex: 1; display: grid; grid-template-columns: 320px minmax(0,1fr); gap: 18px; padding: 18px;
-  max-width: 1600px; margin: 0 auto; width: 100%; box-sizing: border-box; overflow: hidden;
-}
-.panel {
-  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px;
-  box-shadow: 0 2px 8px #17203308; height: 100%; overflow-y: auto; box-sizing: border-box;
-}
-.panel::-webkit-scrollbar { width: 6px; }
-.panel::-webkit-scrollbar-thumb { background-color: #cbd2dc; border-radius: 10px; }
-.panel::-webkit-scrollbar-track { background: transparent; }
+  <title>拼豆图纸生成器</title>
+  <style>
+    :root{--bg:#f5f6f8;--panel:#fff;--ink:#18202b;--muted:#657184;--line:#dce1e8;--accent:#b4232f}
+    *{box-sizing:border-box}
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+      display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+    }
+    header {
+      padding: 22px clamp(16px,4vw,42px); background: #fff; border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    h1 { margin: 0; font-size: clamp(22px,3vw,30px); }
+    header p { margin: 6px 0 0; color: var(--muted); }
+    main {
+      flex: 1; display: grid; grid-template-columns: 320px minmax(0,1fr); gap: 18px; padding: 18px;
+      max-width: 1600px; margin: 0 auto; width: 100%; box-sizing: border-box; overflow: hidden;
+    }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+      box-shadow: 0 2px 8px #17203308; height: 100%; overflow-y: auto; box-sizing: border-box;
+    }
+    .panel::-webkit-scrollbar { width: 6px; }
+    .panel::-webkit-scrollbar-thumb { background-color: #cbd2dc; border-radius: 10px; }
+    .panel::-webkit-scrollbar-track { background: transparent; }
 
-h2{font-size:16px;margin:0 0 14px}.field{margin:15px 0}.field label{display:flex;justify-content:space-between;gap:12px;font-weight:600;margin-bottom:7px}
-small,.muted{color:var(--muted)}input[type=file]{display:none}.drop{display:block;text-align:center;border:1.5px dashed #aeb8c7;border-radius:12px;padding:20px 12px;cursor:pointer;background:#fafbfc}.drop:hover{border-color:#66758b;background:#f3f6fa}
-button,select{font:inherit;border-radius:9px;border:1px solid #cbd2dc;padding:9px 11px;background:white;color:var(--ink)}button{cursor:pointer}button.primary{background:#17202d;color:white;border-color:#17202d;font-weight:700;width:100%;padding:12px}button:disabled{opacity:.45;cursor:not-allowed}
-input[type=range]{width:100%;accent-color:#29384c}select{width:100%}.check{display:flex;align-items:center;gap:8px;font-weight:500}.check input{width:17px;height:17px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stat{background:#f4f6f9;border-radius:10px;padding:10px}.stat strong{display:block;font-size:19px}.stat span{font-size:12px;color:var(--muted)}
-.preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.preview-actions{display:flex;align-items:center;gap:8px}
-.stage{height: 65vh;min-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#e9edf2;padding:20px;display:flex;align-items:flex-start;justify-content:flex-start;position:relative}
+    h2{font-size:16px;margin:0 0 14px}.field{margin:15px 0}.field label{display:flex;justify-content:space-between;gap:12px;font-weight:600;margin-bottom:7px}
+    small,.muted{color:var(--muted)}input[type=file]{display:none}.drop{display:block;text-align:center;border:1.5px dashed #aeb8c7;border-radius:12px;padding:20px 12px;cursor:pointer;background:#fafbfc}.drop:hover{border-color:#66758b;background:#f3f6fa}
+    button,select{font:inherit;border-radius:9px;border:1px solid #cbd2dc;padding:9px 11px;background:white;color:var(--ink)}button{cursor:pointer}button.primary{background:#17202d;color:white;border-color:#17202d;font-weight:700;width:100%;padding:12px}button:disabled{opacity:.45;cursor:not-allowed}
+    input[type=range]{width:100%;accent-color:#29384c}select{width:100%}.check{display:flex;align-items:center;gap:8px;font-weight:500}.check input{width:17px;height:17px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stat{background:#f4f6f9;border-radius:10px;padding:10px}.stat strong{display:block;font-size:19px}.stat span{font-size:12px;color:var(--muted)}
+    .preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.preview-actions{display:flex;align-items:center;gap:8px}
+    .stage{height: 65vh;min-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#e9edf2;padding:20px;display:flex;align-items:flex-start;justify-content:flex-start;position:relative}
 
-/* 包裹层：图片 + 选择覆盖层 */
-.stage-wrap{position:relative;display:inline-block;line-height:0;box-shadow:0 3px 12px #0002;}
-.stage-wrap img{display:block;max-width:none;background:white;cursor:crosshair;user-select:none;-webkit-user-drag:none;}
-.stage-wrap .overlay{position:absolute;left:0;top:0;pointer-events:none;}
+    /* 包裹层：图片 + 选择覆盖层 */
+    .stage-wrap{position:relative;display:inline-block;line-height:0;box-shadow:0 3px 12px #0002;}
+    .stage-wrap img{display:block;max-width:none;background:white;cursor:crosshair;user-select:none;-webkit-user-drag:none;}
+    .stage-wrap .overlay{position:absolute;left:0;top:0;pointer-events:none;}
 
-.placeholder{margin:auto;text-align:center;color:var(--muted);max-width:360px}.placeholder .symbol{font-size:44px;margin-bottom:8px}
+    .placeholder{margin:auto;text-align:center;color:var(--muted);max-width:360px}.placeholder .symbol{font-size:44px;margin-bottom:8px}
 
-.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.chip{display:flex;align-items:center;gap:5px;background:#f7f8fa;border:1px solid var(--line);border-radius:7px;padding:5px 7px;font-size:12px;cursor:pointer;transition:all .2s;user-select:none;}
-.chip:hover{background:#eef2f7;border-color:#cbd2dc;transform:translateY(-1px);box-shadow:0 2px 5px #0001}
-.chip:active{transform:translateY(0)}
-.swatch{width:15px;height:15px;border:1px solid #0002;border-radius:3px}
+    .legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+    .chip{display:flex;align-items:center;gap:5px;background:#f7f8fa;border:1px solid var(--line);border-radius:7px;padding:5px 7px;font-size:12px;cursor:pointer;transition:all .2s;user-select:none;}
+    .chip:hover{background:#eef2f7;border-color:#cbd2dc;transform:translateY(-1px);box-shadow:0 2px 5px #0001}
+    .chip:active{transform:translateY(0)}
+    .swatch{width:15px;height:15px;border:1px solid #0002;border-radius:3px}
 
-/* 删除按钮的样式 */
-.del-btn {
-  margin-left: 2px;
-  color: #999;
-  font-weight: bold;
-  font-size: 14px;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s;
-}
-.del-btn:hover {
-  background: #ffcdd2;
-  color: #d32f2f;
-}
+    /* 删除按钮的样式 */
+    .del-btn {
+      margin-left: 2px;
+      color: #999;
+      font-weight: bold;
+      font-size: 14px;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+    .del-btn:hover {
+      background: #ffcdd2;
+      color: #d32f2f;
+    }
 
-.notice{font-size:12px;color:var(--muted);margin-top:12px}
-.audit-table{width:100%;border-collapse:collapse;font-size:12px;min-width:300px}.audit-table th,.audit-table td{padding:8px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}.audit-table th{background:#f4f6f9;font-weight:700}.audit-swatch{display:inline-block;width:20px;height:20px;vertical-align:middle;border:1px solid #0002;border-radius:4px;margin-right:6px}.audit-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    .notice{font-size:12px;color:var(--muted);margin-top:12px}
 
-/* 模态框样式 */
-.modal-overlay {
-  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center;
-}
-.modal-content {
-  background: white; border-radius: 12px; width: 90%; max-width: 800px; max-height: 85vh;
-  display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-.modal-header {
-  padding: 15px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;
-}
-.modal-header h3 { margin: 0; font-size: 16px; }
-.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 0 5px;}
-.close-btn:hover { color: var(--ink); }
-.palette-grid {
-  padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
-  gap: 12px; overflow-y: auto; flex: 1;
-}
-.palette-item {
-  display: flex; flex-direction: column; align-items: center; cursor: pointer; border-radius: 6px; padding: 6px; border: 1px solid transparent;
-}
-.palette-item:hover { background: #f0f2f5; border-color: #dce1e8; }
-.p-color { width: 36px; height: 36px; border-radius: 6px; border: 1px solid #0002; margin-bottom: 6px; }
-.p-id { font-size: 11px; font-weight: 600; color: var(--ink); }
+    /* 模态框样式 */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); z-index: 1000; justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: white; border-radius: 12px; width: 90%; max-width: 800px; max-height: 85vh;
+      display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      padding: 15px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-header h3 { margin: 0; font-size: 16px; }
+    .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 0 5px;}
+    .close-btn:hover { color: var(--ink); }
+    .palette-grid {
+      padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+      gap: 12px; overflow-y: auto; flex: 1;
+    }
+    .palette-item {
+      display: flex; flex-direction: column; align-items: center; cursor: pointer; border-radius: 6px; padding: 6px; border: 1px solid transparent;
+    }
+    .palette-item:hover { background: #f0f2f5; border-color: #dce1e8; }
+    .p-color { width: 36px; height: 36px; border-radius: 6px; border: 1px solid #0002; margin-bottom: 6px; }
+    .p-id { font-size: 11px; font-weight: 600; color: var(--ink); }
 
-@media(max-width:850px){
-  body { height: auto; overflow: auto; display: block; }
-  main { display: block; height: auto; overflow: visible; padding: 10px; }
-  .panel { height: auto; overflow: visible; margin-bottom: 18px; }
-  .stage { height: 58vh; min-height: 300px; }
-}
-</style></head><body>
+    @media(max-width:850px){
+      body { height: auto; overflow: auto; display: block; }
+      main { display: block; height: auto; overflow: visible; padding: 10px; }
+      .panel { height: auto; overflow: visible; margin-bottom: 18px; }
+      .stage { height: 58vh; min-height: 300px; }
+    }
+  </style></head><body>
 <header><h1>拼豆图纸生成器</h1><p>上传图片 → 映射到 Mard 色卡 → 生成带色号、5格红线、坐标与用量清单的打印图纸</p></header>
 <main><aside class="panel">
-<h2>① 图片与参数</h2>
-<label class="drop" for="file"><div style="font-size:26px">＋</div><strong id="fileLabel">点击选择图片，或拖拽到这里</strong><div class="muted" style="margin-top:5px">支持 PNG / JPG / WEBP</div></label><input id="file" type="file" accept="image/*">
-<div id="sourcePreview" style="display:none;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fafbfc">
-  <img id="sourcePreviewImg" alt="原图预览" style="display:block;max-width:100%;max-height:260px;object-fit:contain;margin:auto;border-radius:6px">
-  <div id="sourceDimensions" class="muted" style="font-size:12px;text-align:center;margin-top:6px"></div>
-</div>
-<div class="field" style="margin-top:18px"><h2 style="margin-bottom:6px">原图颜色识别与 Mard 候选匹配</h2><small>显示提取的代表色、HEX 与最接近的 Mard 色号。该表会在上传图片后自动更新。</small></div>
-<div id="colorAudit" style="overflow-x:auto;border:1px solid var(--line);border-radius:9px">
-  <div class="muted" style="padding:12px;font-size:12px">上传图片后，这里将显示识别颜色及候选色号。</div>
-</div>
-<div class="field">
-  <label for="size">图纸长边格数</label>
-  <select id="size">
-    <option value="10">10 格（小板）</option>
-    <option value="20">20 格（小板）</option>
-    <option value="50">50 格（简洁）</option>
-    <option value="84" selected>84 格（推荐）</option>
-    <option value="100">100 格（精细）</option>
-    <option value="140">140 格（超精细）</option>
-  </select>
-</div>
-<div class="field"><label for="colors">提取颜色数量 <span id="colorVal">24 色</span></label><input id="colors" type="range" min="2" max="40" value="24"><small>控制图案使用的颜色数量上限；最终仅使用映射后的 Mard 色号。</small></div>
-<div class="field"><label class="check"><input id="dither" type="checkbox"> 启用误差抖动（适合渐变）</label></div>
-<div class="field"><label for="zoom">预览缩放 <span id="zoomVal">60%</span></label><input id="zoom" type="range" min="20" max="120" value="60"></div>
-<button class="primary" id="generate" disabled>生成拼豆图纸</button>
-<div class="stats"><div class="stat"><strong id="statSize">—</strong><span>图纸尺寸</span></div><div class="stat"><strong id="statColors">—</strong><span>使用色号</span></div><div class="stat"><strong id="statCount">—</strong><span>豆子总数</span></div></div>
-<button id="export" disabled style="width:100%">导出高清 PNG 图纸</button>
-<div class="notice">色卡说明：内置 221 个 Mard 色号（A26 / B32 / C29 / D26 / E24 / F25 / G21 / H23 / M15），HEX 已与实体色卡对照表逐一核对。严格生产前建议用实体色卡复核。</div>
+  <h2>① 图片与参数</h2>
+  <label class="drop" for="file"><div style="font-size:26px">＋</div><strong id="fileLabel">点击选择图片，或拖拽到这里</strong><div class="muted" style="margin-top:5px">支持 PNG / JPG / WEBP</div></label><input id="file" type="file" accept="image/*">
+  <div id="sourcePreview" style="display:none;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fafbfc">
+    <img id="sourcePreviewImg" alt="原图预览" style="display:block;max-width:100%;max-height:260px;object-fit:contain;margin:auto;border-radius:6px">
+    <div id="sourceDimensions" class="muted" style="font-size:12px;text-align:center;margin-top:6px"></div>
+  </div>
+  <div class="field" style="margin-top:18px">
+    <label for="size">图纸长边格数</label>
+    <select id="size">
+      <option value="10">10 格（小板）</option>
+      <option value="20">20 格（小板）</option>
+      <option value="50">50 格（简洁）</option>
+      <option value="84" selected>84 格（推荐）</option>
+      <option value="100">100 格（精细）</option>
+      <option value="140">140 格（超精细）</option>
+    </select>
+  </div>
+  <div class="field"><label for="colors">提取颜色数量 <span id="colorVal">24 色</span></label><input id="colors" type="range" min="2" max="40" value="24"><small>控制图案使用的颜色数量上限；最终仅使用映射后的 Mard 色号。</small></div>
+  <div class="field"><label class="check"><input id="dither" type="checkbox"> 启用误差抖动（适合渐变）</label></div>
+  <div class="field"><label for="zoom">预览缩放 <span id="zoomVal">60%</span></label><input id="zoom" type="range" min="20" max="120" value="60"></div>
+  <button class="primary" id="generate" disabled>生成拼豆图纸</button>
+  <div class="stats"><div class="stat"><strong id="statSize">—</strong><span>图纸尺寸</span></div><div class="stat"><strong id="statColors">—</strong><span>使用色号</span></div><div class="stat"><strong id="statCount">—</strong><span>豆子总数</span></div></div>
+  <button id="export" disabled style="width:100%">导出高清 PNG 图纸</button>
+  <div class="notice">色卡说明：内置 221 个 Mard 色号（A26 / B32 / C29 / D26 / E24 / F25 / G21 / H23 / M15），HEX 已与实体色卡对照表逐一核对。严格生产前建议用实体色卡复核。</div>
 </aside>
-<section class="panel">
-  <div class="preview-head">
-    <div>
-      <h2 style="margin:0">② 图纸预览</h2>
-      <small id="previewInfo">生成后可滚动查看。拖动框选多个格子批量改色，单击单个格子单独改色，点击下方【图例】可全局替换。</small>
+  <section class="panel">
+    <div class="preview-head">
+      <div>
+        <h2 style="margin:0">② 图纸预览</h2>
+        <small id="previewInfo">生成后可滚动查看。拖动框选多个格子批量改色，单击单个格子单独改色，点击下方【图例】可全局替换。</small>
+      </div>
+      <div class="preview-actions"><button id="fit">适应窗口</button></div>
     </div>
-    <div class="preview-actions"><button id="fit">适应窗口</button></div>
-  </div>
-  <div class="stage" id="stage"><div class="placeholder"><div class="symbol">▦</div><strong>你的拼豆图纸会显示在这里</strong><p>先上传一张图片，再点击“生成拼豆图纸”。图纸会保持原图宽高比，不会拉伸变形。</p></div></div>
-  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:16px;">
-    <h2 style="margin:0;">颜色用量清单</h2>
-    <small class="muted" id="legendTip" style="display:none">💡 点击色块全局替换；点击右侧 <b>×</b> 智能隐藏：首次只隐藏与边缘连通的部分，再点一次隐藏剩余格子</small>
-  </div>
-  <div class="legend" id="legend"><span class="muted">生成图纸后显示色号与每种颜色的颗数。</span></div>
-</section></main>
+    <div class="stage" id="stage"><div class="placeholder"><div class="symbol">▦</div><strong>你的拼豆图纸会显示在这里</strong><p>先上传一张图片，再点击“生成拼豆图纸”。图纸会保持原图宽高比，不会拉伸变形。</p></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:16px;">
+      <h2 style="margin:0;">颜色用量清单</h2>
+      <small class="muted" id="legendTip" style="display:none">💡 点击色块全局替换；点击右侧 <b>×</b> 智能隐藏：首次只隐藏与边缘连通的部分，再点一次隐藏剩余格子</small>
+    </div>
+    <div class="legend" id="legend"><span class="muted">生成图纸后显示色号与每种颜色的颗数。</span></div>
+  </section></main>
 
 <!-- 颜色选择模态框 -->
 <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeColorPicker()">
@@ -162,582 +157,551 @@ input[type=range]{width:100%;accent-color:#29384c}select{width:100%}.check{displ
 </div>
 
 <script>
-/* ===== Mard 221 色卡（HEX 与实体色卡对照表完全一致）===== */
-const PALETTE = [
-/* A 系 26 色 */
-{"id":"A1","hex":"#FAF4C8","rgb":[250,244,200]},{"id":"A2","hex":"#FFFFD5","rgb":[255,255,213]},{"id":"A3","hex":"#FEFF8B","rgb":[254,255,139]},{"id":"A4","hex":"#FBED56","rgb":[251,237,86]},{"id":"A5","hex":"#F4D738","rgb":[244,215,56]},{"id":"A6","hex":"#FEAC4C","rgb":[254,172,76]},{"id":"A7","hex":"#FE884C","rgb":[254,136,76]},{"id":"A8","hex":"#FFDA45","rgb":[255,218,69]},{"id":"A9","hex":"#FF995B","rgb":[255,153,91]},{"id":"A10","hex":"#F77C31","rgb":[247,124,49]},{"id":"A11","hex":"#FFDD99","rgb":[255,221,153]},{"id":"A12","hex":"#FE9F72","rgb":[254,159,114]},{"id":"A13","hex":"#FFC365","rgb":[255,195,101]},{"id":"A14","hex":"#FD543D","rgb":[253,84,61]},{"id":"A15","hex":"#FFF365","rgb":[255,243,101]},{"id":"A16","hex":"#FFFF9F","rgb":[255,255,159]},{"id":"A17","hex":"#FFE36E","rgb":[255,227,110]},{"id":"A18","hex":"#FEBE7D","rgb":[254,190,125]},{"id":"A19","hex":"#FD7C72","rgb":[253,124,114]},{"id":"A20","hex":"#FFD568","rgb":[255,213,104]},{"id":"A21","hex":"#FFE395","rgb":[255,227,149]},{"id":"A22","hex":"#F4F57D","rgb":[244,245,125]},{"id":"A23","hex":"#E6C9B7","rgb":[230,201,183]},{"id":"A24","hex":"#F7F8A2","rgb":[247,248,162]},{"id":"A25","hex":"#FFD67D","rgb":[255,214,125]},{"id":"A26","hex":"#FFC830","rgb":[255,200,48]},
-/* B 系 32 色 */
-{"id":"B1","hex":"#E6EE31","rgb":[230,238,49]},{"id":"B2","hex":"#63F347","rgb":[99,243,71]},{"id":"B3","hex":"#9EF780","rgb":[158,247,128]},{"id":"B4","hex":"#5DE035","rgb":[93,224,53]},{"id":"B5","hex":"#35E352","rgb":[53,227,82]},{"id":"B6","hex":"#65E2A6","rgb":[101,226,166]},{"id":"B7","hex":"#3DAF80","rgb":[61,175,128]},{"id":"B8","hex":"#1C9C4F","rgb":[28,156,79]},{"id":"B9","hex":"#27523A","rgb":[39,82,58]},{"id":"B10","hex":"#95D3C2","rgb":[149,211,194]},{"id":"B11","hex":"#5D722A","rgb":[93,114,42]},{"id":"B12","hex":"#166F41","rgb":[22,111,65]},{"id":"B13","hex":"#CAEB7B","rgb":[202,235,123]},{"id":"B14","hex":"#ADE946","rgb":[173,233,70]},{"id":"B15","hex":"#2E5132","rgb":[46,81,50]},{"id":"B16","hex":"#C5ED9C","rgb":[197,237,156]},{"id":"B17","hex":"#9BB13A","rgb":[155,177,58]},{"id":"B18","hex":"#E6EE49","rgb":[230,238,73]},{"id":"B19","hex":"#24B88C","rgb":[36,184,140]},{"id":"B20","hex":"#C2F0CC","rgb":[194,240,204]},{"id":"B21","hex":"#156A6B","rgb":[21,106,107]},{"id":"B22","hex":"#083C43","rgb":[8,60,67]},{"id":"B23","hex":"#303A21","rgb":[48,58,33]},{"id":"B24","hex":"#EEFCA5","rgb":[238,252,165]},{"id":"B25","hex":"#4E846D","rgb":[78,132,109]},{"id":"B26","hex":"#8D7A35","rgb":[141,122,53]},{"id":"B27","hex":"#CCE1AF","rgb":[204,225,175]},{"id":"B28","hex":"#9EE5B9","rgb":[158,229,185]},{"id":"B29","hex":"#C5E254","rgb":[197,226,84]},{"id":"B30","hex":"#E2FCB1","rgb":[226,252,177]},{"id":"B31","hex":"#B0E792","rgb":[176,231,146]},{"id":"B32","hex":"#9CAB5A","rgb":[156,171,90]},
-/* C 系 29 色 */
-{"id":"C1","hex":"#E8FFE7","rgb":[232,255,231]},{"id":"C2","hex":"#A9F9FC","rgb":[169,249,252]},{"id":"C3","hex":"#A0E2FB","rgb":[160,226,251]},{"id":"C4","hex":"#41CCFF","rgb":[65,204,255]},{"id":"C5","hex":"#01ACEB","rgb":[1,172,235]},{"id":"C6","hex":"#50AAF0","rgb":[80,170,240]},{"id":"C7","hex":"#3677D2","rgb":[54,119,210]},{"id":"C8","hex":"#0F54C0","rgb":[15,84,192]},{"id":"C9","hex":"#324BCA","rgb":[50,75,202]},{"id":"C10","hex":"#3EBCE2","rgb":[62,188,226]},{"id":"C11","hex":"#28DDDE","rgb":[40,221,222]},{"id":"C12","hex":"#1C334D","rgb":[28,51,77]},{"id":"C13","hex":"#CDE8FF","rgb":[205,232,255]},{"id":"C14","hex":"#D5DFFF","rgb":[213,223,255]},{"id":"C15","hex":"#22C4C6","rgb":[34,196,198]},{"id":"C16","hex":"#1557A8","rgb":[21,87,168]},{"id":"C17","hex":"#04D1F6","rgb":[4,209,246]},{"id":"C18","hex":"#1D3344","rgb":[29,51,68]},{"id":"C19","hex":"#1887A2","rgb":[24,135,162]},{"id":"C20","hex":"#176DAF","rgb":[23,109,175]},{"id":"C21","hex":"#BEDDFF","rgb":[190,221,255]},{"id":"C22","hex":"#67B4BE","rgb":[103,180,190]},{"id":"C23","hex":"#C8E2FF","rgb":[200,226,255]},{"id":"C24","hex":"#7CC4FF","rgb":[124,196,255]},{"id":"C25","hex":"#A9E5E5","rgb":[169,229,229]},{"id":"C26","hex":"#3CAED8","rgb":[60,174,216]},{"id":"C27","hex":"#D3DFFA","rgb":[211,223,250]},{"id":"C28","hex":"#BBCFED","rgb":[187,207,237]},{"id":"C29","hex":"#34488E","rgb":[52,72,142]},
-/* D 系 26 色 */
-{"id":"D1","hex":"#AEB4F2","rgb":[174,180,242]},{"id":"D2","hex":"#858EDD","rgb":[133,142,221]},{"id":"D3","hex":"#2F54AF","rgb":[47,84,175]},{"id":"D4","hex":"#182A84","rgb":[24,42,132]},{"id":"D5","hex":"#B843C5","rgb":[184,67,197]},{"id":"D6","hex":"#AC7BDE","rgb":[172,123,222]},{"id":"D7","hex":"#8854B3","rgb":[136,84,179]},{"id":"D8","hex":"#E2D3FF","rgb":[226,211,255]},{"id":"D9","hex":"#D589F8","rgb":[213,137,248]},{"id":"D10","hex":"#361851","rgb":[54,24,81]},{"id":"D11","hex":"#B9BAE1","rgb":[185,186,225]},{"id":"D12","hex":"#DE9AD4","rgb":[222,154,212]},{"id":"D13","hex":"#B90095","rgb":[185,0,149]},{"id":"D14","hex":"#8B279B","rgb":[139,39,155]},{"id":"D15","hex":"#2F1F90","rgb":[47,31,144]},{"id":"D16","hex":"#E3E1EE","rgb":[227,225,238]},{"id":"D17","hex":"#C4D4F6","rgb":[196,212,246]},{"id":"D18","hex":"#A45EC7","rgb":[164,94,199]},{"id":"D19","hex":"#D8C3D7","rgb":[216,195,215]},{"id":"D20","hex":"#9C32B2","rgb":[156,50,178]},{"id":"D21","hex":"#9A009B","rgb":[154,0,155]},{"id":"D22","hex":"#333A95","rgb":[51,58,149]},{"id":"D23","hex":"#EBDAFC","rgb":[235,218,252]},{"id":"D24","hex":"#7786E5","rgb":[119,134,229]},{"id":"D25","hex":"#494FC7","rgb":[73,79,199]},{"id":"D26","hex":"#DFC2F8","rgb":[223,194,248]},
-/* E 系 24 色 */
-{"id":"E1","hex":"#FDD3CC","rgb":[253,211,204]},{"id":"E2","hex":"#FEC0DF","rgb":[254,192,223]},{"id":"E3","hex":"#FFB7E7","rgb":[255,183,231]},{"id":"E4","hex":"#E8649E","rgb":[232,100,158]},{"id":"E5","hex":"#F551A2","rgb":[245,81,162]},{"id":"E6","hex":"#F13D74","rgb":[241,61,116]},{"id":"E7","hex":"#C63478","rgb":[198,52,120]},{"id":"E8","hex":"#FFDBE9","rgb":[255,219,233]},{"id":"E9","hex":"#E970CC","rgb":[233,112,204]},{"id":"E10","hex":"#D33793","rgb":[211,55,147]},{"id":"E11","hex":"#FCDDD2","rgb":[252,221,210]},{"id":"E12","hex":"#F78FC3","rgb":[247,143,195]},{"id":"E13","hex":"#B5006D","rgb":[181,0,109]},{"id":"E14","hex":"#FFD1BA","rgb":[255,209,186]},{"id":"E15","hex":"#F8C7C9","rgb":[248,199,201]},{"id":"E16","hex":"#FFF3EB","rgb":[255,243,235]},{"id":"E17","hex":"#FFE2EA","rgb":[255,226,234]},{"id":"E18","hex":"#FFC7DB","rgb":[255,199,219]},{"id":"E19","hex":"#FEBAD5","rgb":[254,186,213]},{"id":"E20","hex":"#D8C7D1","rgb":[216,199,209]},{"id":"E21","hex":"#BD9DA1","rgb":[189,157,161]},{"id":"E22","hex":"#B785A1","rgb":[183,133,161]},{"id":"E23","hex":"#937A8D","rgb":[147,122,141]},{"id":"E24","hex":"#E1BCE8","rgb":[225,188,232]},
-/* F 系 25 色 */
-{"id":"F1","hex":"#FD957B","rgb":[253,149,123]},{"id":"F2","hex":"#FC3D46","rgb":[252,61,70]},{"id":"F3","hex":"#F74941","rgb":[247,73,65]},{"id":"F4","hex":"#FC283C","rgb":[252,40,60]},{"id":"F5","hex":"#E7002F","rgb":[231,0,47]},{"id":"F6","hex":"#943630","rgb":[148,54,48]},{"id":"F7","hex":"#971937","rgb":[151,25,55]},{"id":"F8","hex":"#BC0028","rgb":[188,0,40]},{"id":"F9","hex":"#E2677A","rgb":[226,103,122]},{"id":"F10","hex":"#8A4526","rgb":[138,69,38]},{"id":"F11","hex":"#5A2121","rgb":[90,33,33]},{"id":"F12","hex":"#FD4E6A","rgb":[253,78,106]},{"id":"F13","hex":"#F35744","rgb":[243,87,68]},{"id":"F14","hex":"#FFA9AD","rgb":[255,169,173]},{"id":"F15","hex":"#D30022","rgb":[211,0,34]},{"id":"F16","hex":"#FEC2A6","rgb":[254,194,166]},{"id":"F17","hex":"#E69C79","rgb":[230,156,121]},{"id":"F18","hex":"#D37C46","rgb":[211,124,70]},{"id":"F19","hex":"#C1444A","rgb":[193,68,74]},{"id":"F20","hex":"#CD9391","rgb":[205,147,145]},{"id":"F21","hex":"#F7B4C6","rgb":[247,180,198]},{"id":"F22","hex":"#FDC0D0","rgb":[253,192,208]},{"id":"F23","hex":"#F67E66","rgb":[246,126,102]},{"id":"F24","hex":"#E698AA","rgb":[230,152,170]},{"id":"F25","hex":"#E54B4F","rgb":[229,75,79]},
-/* G 系 21 色 */
-{"id":"G1","hex":"#FFE2CE","rgb":[255,226,206]},{"id":"G2","hex":"#FFC4AA","rgb":[255,196,170]},{"id":"G3","hex":"#F4C3A5","rgb":[244,195,165]},{"id":"G4","hex":"#E1B383","rgb":[225,179,131]},{"id":"G5","hex":"#EDBD45","rgb":[237,189,69]},{"id":"G6","hex":"#E99C17","rgb":[233,156,23]},{"id":"G7","hex":"#9D583E","rgb":[157,88,62]},{"id":"G8","hex":"#753832","rgb":[117,56,50]},{"id":"G9","hex":"#E6B483","rgb":[230,180,131]},{"id":"G10","hex":"#D98C39","rgb":[217,140,57]},{"id":"G11","hex":"#E0C593","rgb":[224,197,147]},{"id":"G12","hex":"#FFC890","rgb":[255,200,144]},{"id":"G13","hex":"#B7714A","rgb":[183,113,74]},{"id":"G14","hex":"#8D614C","rgb":[141,97,76]},{"id":"G15","hex":"#FCF9E0","rgb":[252,249,224]},{"id":"G16","hex":"#F2D9BA","rgb":[242,217,186]},{"id":"G17","hex":"#78524B","rgb":[120,82,75]},{"id":"G18","hex":"#FFE4CC","rgb":[255,228,204]},{"id":"G19","hex":"#E07935","rgb":[224,121,53]},{"id":"G20","hex":"#A94023","rgb":[169,64,35]},{"id":"G21","hex":"#B88558","rgb":[184,133,88]},
-/* H 系 23 色 */
-{"id":"H1","hex":"#FDFBFF","rgb":[253,251,255]},{"id":"H2","hex":"#FEFFFF","rgb":[254,255,255]},{"id":"H3","hex":"#B6B1BA","rgb":[182,177,186]},{"id":"H4","hex":"#89858C","rgb":[137,133,140]},{"id":"H5","hex":"#48464E","rgb":[72,70,78]},{"id":"H6","hex":"#2F2B2F","rgb":[47,43,47]},{"id":"H7","hex":"#000000","rgb":[0,0,0]},{"id":"H8","hex":"#E7D6DB","rgb":[231,214,219]},{"id":"H9","hex":"#EDEDED","rgb":[237,237,237]},{"id":"H10","hex":"#EEE9EA","rgb":[238,233,234]},{"id":"H11","hex":"#CECDD5","rgb":[206,205,213]},{"id":"H12","hex":"#FFF5ED","rgb":[255,245,237]},{"id":"H13","hex":"#F5ECD2","rgb":[245,236,210]},{"id":"H14","hex":"#CFD7D3","rgb":[207,215,211]},{"id":"H15","hex":"#98A6A8","rgb":[152,166,168]},{"id":"H16","hex":"#1D1414","rgb":[29,20,20]},{"id":"H17","hex":"#F1EDED","rgb":[241,237,237]},{"id":"H18","hex":"#FFFDF0","rgb":[255,253,240]},{"id":"H19","hex":"#F6EFE2","rgb":[246,239,226]},{"id":"H20","hex":"#949FA3","rgb":[148,159,163]},{"id":"H21","hex":"#FFFBE1","rgb":[255,251,225]},{"id":"H22","hex":"#CACAD4","rgb":[202,202,212]},{"id":"H23","hex":"#9A9D94","rgb":[154,157,148]},
-/* M 系 15 色 */
-{"id":"M1","hex":"#BCC6B8","rgb":[188,198,184]},{"id":"M2","hex":"#8AA386","rgb":[138,163,134]},{"id":"M3","hex":"#697D80","rgb":[105,125,128]},{"id":"M4","hex":"#E3D2BC","rgb":[227,210,188]},{"id":"M5","hex":"#D0CCAA","rgb":[208,204,170]},{"id":"M6","hex":"#B0A782","rgb":[176,167,130]},{"id":"M7","hex":"#B4A497","rgb":[180,164,151]},{"id":"M8","hex":"#B38281","rgb":[179,130,129]},{"id":"M9","hex":"#A58767","rgb":[165,135,103]},{"id":"M10","hex":"#C5B2BC","rgb":[197,178,188]},{"id":"M11","hex":"#9F7594","rgb":[159,117,148]},{"id":"M12","hex":"#644749","rgb":[100,71,73]},{"id":"M13","hex":"#D19066","rgb":[209,144,102]},{"id":"M14","hex":"#C77362","rgb":[199,115,98]},{"id":"M15","hex":"#757D78","rgb":[117,125,120]}
-];
+  /* ===== Mard 221 色卡（HEX 与实体色卡对照表完全一致）===== */
+  const PALETTE = [
+    /* A 系 26 色 */
+    {"id":"A1","hex":"#FAF4C8","rgb":[250,244,200]},{"id":"A2","hex":"#FFFFD5","rgb":[255,255,213]},{"id":"A3","hex":"#FEFF8B","rgb":[254,255,139]},{"id":"A4","hex":"#FBED56","rgb":[251,237,86]},{"id":"A5","hex":"#F4D738","rgb":[244,215,56]},{"id":"A6","hex":"#FEAC4C","rgb":[254,172,76]},{"id":"A7","hex":"#FE884C","rgb":[254,136,76]},{"id":"A8","hex":"#FFDA45","rgb":[255,218,69]},{"id":"A9","hex":"#FF995B","rgb":[255,153,91]},{"id":"A10","hex":"#F77C31","rgb":[247,124,49]},{"id":"A11","hex":"#FFDD99","rgb":[255,221,153]},{"id":"A12","hex":"#FE9F72","rgb":[254,159,114]},{"id":"A13","hex":"#FFC365","rgb":[255,195,101]},{"id":"A14","hex":"#FD543D","rgb":[253,84,61]},{"id":"A15","hex":"#FFF365","rgb":[255,243,101]},{"id":"A16","hex":"#FFFF9F","rgb":[255,255,159]},{"id":"A17","hex":"#FFE36E","rgb":[255,227,110]},{"id":"A18","hex":"#FEBE7D","rgb":[254,190,125]},{"id":"A19","hex":"#FD7C72","rgb":[253,124,114]},{"id":"A20","hex":"#FFD568","rgb":[255,213,104]},{"id":"A21","hex":"#FFE395","rgb":[255,227,149]},{"id":"A22","hex":"#F4F57D","rgb":[244,245,125]},{"id":"A23","hex":"#E6C9B7","rgb":[230,201,183]},{"id":"A24","hex":"#F7F8A2","rgb":[247,248,162]},{"id":"A25","hex":"#FFD67D","rgb":[255,214,125]},{"id":"A26","hex":"#FFC830","rgb":[255,200,48]},
+    /* B 系 32 色 */
+    {"id":"B1","hex":"#E6EE31","rgb":[230,238,49]},{"id":"B2","hex":"#63F347","rgb":[99,243,71]},{"id":"B3","hex":"#9EF780","rgb":[158,247,128]},{"id":"B4","hex":"#5DE035","rgb":[93,224,53]},{"id":"B5","hex":"#35E352","rgb":[53,227,82]},{"id":"B6","hex":"#65E2A6","rgb":[101,226,166]},{"id":"B7","hex":"#3DAF80","rgb":[61,175,128]},{"id":"B8","hex":"#1C9C4F","rgb":[28,156,79]},{"id":"B9","hex":"#27523A","rgb":[39,82,58]},{"id":"B10","hex":"#95D3C2","rgb":[149,211,194]},{"id":"B11","hex":"#5D722A","rgb":[93,114,42]},{"id":"B12","hex":"#166F41","rgb":[22,111,65]},{"id":"B13","hex":"#CAEB7B","rgb":[202,235,123]},{"id":"B14","hex":"#ADE946","rgb":[173,233,70]},{"id":"B15","hex":"#2E5132","rgb":[46,81,50]},{"id":"B16","hex":"#C5ED9C","rgb":[197,237,156]},{"id":"B17","hex":"#9BB13A","rgb":[155,177,58]},{"id":"B18","hex":"#E6EE49","rgb":[230,238,73]},{"id":"B19","hex":"#24B88C","rgb":[36,184,140]},{"id":"B20","hex":"#C2F0CC","rgb":[194,240,204]},{"id":"B21","hex":"#156A6B","rgb":[21,106,107]},{"id":"B22","hex":"#083C43","rgb":[8,60,67]},{"id":"B23","hex":"#303A21","rgb":[48,58,33]},{"id":"B24","hex":"#EEFCA5","rgb":[238,252,165]},{"id":"B25","hex":"#4E846D","rgb":[78,132,109]},{"id":"B26","hex":"#8D7A35","rgb":[141,122,53]},{"id":"B27","hex":"#CCE1AF","rgb":[204,225,175]},{"id":"B28","hex":"#9EE5B9","rgb":[158,229,185]},{"id":"B29","hex":"#C5E254","rgb":[197,226,84]},{"id":"B30","hex":"#E2FCB1","rgb":[226,252,177]},{"id":"B31","hex":"#B0E792","rgb":[176,231,146]},{"id":"B32","hex":"#9CAB5A","rgb":[156,171,90]},
+    /* C 系 29 色 */
+    {"id":"C1","hex":"#E8FFE7","rgb":[232,255,231]},{"id":"C2","hex":"#A9F9FC","rgb":[169,249,252]},{"id":"C3","hex":"#A0E2FB","rgb":[160,226,251]},{"id":"C4","hex":"#41CCFF","rgb":[65,204,255]},{"id":"C5","hex":"#01ACEB","rgb":[1,172,235]},{"id":"C6","hex":"#50AAF0","rgb":[80,170,240]},{"id":"C7","hex":"#3677D2","rgb":[54,119,210]},{"id":"C8","hex":"#0F54C0","rgb":[15,84,192]},{"id":"C9","hex":"#324BCA","rgb":[50,75,202]},{"id":"C10","hex":"#3EBCE2","rgb":[62,188,226]},{"id":"C11","hex":"#28DDDE","rgb":[40,221,222]},{"id":"C12","hex":"#1C334D","rgb":[28,51,77]},{"id":"C13","hex":"#CDE8FF","rgb":[205,232,255]},{"id":"C14","hex":"#D5DFFF","rgb":[213,223,255]},{"id":"C15","hex":"#22C4C6","rgb":[34,196,198]},{"id":"C16","hex":"#1557A8","rgb":[21,87,168]},{"id":"C17","hex":"#04D1F6","rgb":[4,209,246]},{"id":"C18","hex":"#1D3344","rgb":[29,51,68]},{"id":"C19","hex":"#1887A2","rgb":[24,135,162]},{"id":"C20","hex":"#176DAF","rgb":[23,109,175]},{"id":"C21","hex":"#BEDDFF","rgb":[190,221,255]},{"id":"C22","hex":"#67B4BE","rgb":[103,180,190]},{"id":"C23","hex":"#C8E2FF","rgb":[200,226,255]},{"id":"C24","hex":"#7CC4FF","rgb":[124,196,255]},{"id":"C25","hex":"#A9E5E5","rgb":[169,229,229]},{"id":"C26","hex":"#3CAED8","rgb":[60,174,216]},{"id":"C27","hex":"#D3DFFA","rgb":[211,223,250]},{"id":"C28","hex":"#BBCFED","rgb":[187,207,237]},{"id":"C29","hex":"#34488E","rgb":[52,72,142]},
+    /* D 系 26 色 */
+    {"id":"D1","hex":"#AEB4F2","rgb":[174,180,242]},{"id":"D2","hex":"#858EDD","rgb":[133,142,221]},{"id":"D3","hex":"#2F54AF","rgb":[47,84,175]},{"id":"D4","hex":"#182A84","rgb":[24,42,132]},{"id":"D5","hex":"#B843C5","rgb":[184,67,197]},{"id":"D6","hex":"#AC7BDE","rgb":[172,123,222]},{"id":"D7","hex":"#8854B3","rgb":[136,84,179]},{"id":"D8","hex":"#E2D3FF","rgb":[226,211,255]},{"id":"D9","hex":"#D589F8","rgb":[213,137,248]},{"id":"D10","hex":"#361851","rgb":[54,24,81]},{"id":"D11","hex":"#B9BAE1","rgb":[185,186,225]},{"id":"D12","hex":"#DE9AD4","rgb":[222,154,212]},{"id":"D13","hex":"#B90095","rgb":[185,0,149]},{"id":"D14","hex":"#8B279B","rgb":[139,39,155]},{"id":"D15","hex":"#2F1F90","rgb":[47,31,144]},{"id":"D16","hex":"#E3E1EE","rgb":[227,225,238]},{"id":"D17","hex":"#C4D4F6","rgb":[196,212,246]},{"id":"D18","hex":"#A45EC7","rgb":[164,94,199]},{"id":"D19","hex":"#D8C3D7","rgb":[216,195,215]},{"id":"D20","hex":"#9C32B2","rgb":[156,50,178]},{"id":"D21","hex":"#9A009B","rgb":[154,0,155]},{"id":"D22","hex":"#333A95","rgb":[51,58,149]},{"id":"D23","hex":"#EBDAFC","rgb":[235,218,252]},{"id":"D24","hex":"#7786E5","rgb":[119,134,229]},{"id":"D25","hex":"#494FC7","rgb":[73,79,199]},{"id":"D26","hex":"#DFC2F8","rgb":[223,194,248]},
+    /* E 系 24 色 */
+    {"id":"E1","hex":"#FDD3CC","rgb":[253,211,204]},{"id":"E2","hex":"#FEC0DF","rgb":[254,192,223]},{"id":"E3","hex":"#FFB7E7","rgb":[255,183,231]},{"id":"E4","hex":"#E8649E","rgb":[232,100,158]},{"id":"E5","hex":"#F551A2","rgb":[245,81,162]},{"id":"E6","hex":"#F13D74","rgb":[241,61,116]},{"id":"E7","hex":"#C63478","rgb":[198,52,120]},{"id":"E8","hex":"#FFDBE9","rgb":[255,219,233]},{"id":"E9","hex":"#E970CC","rgb":[233,112,204]},{"id":"E10","hex":"#D33793","rgb":[211,55,147]},{"id":"E11","hex":"#FCDDD2","rgb":[252,221,210]},{"id":"E12","hex":"#F78FC3","rgb":[247,143,195]},{"id":"E13","hex":"#B5006D","rgb":[181,0,109]},{"id":"E14","hex":"#FFD1BA","rgb":[255,209,186]},{"id":"E15","hex":"#F8C7C9","rgb":[248,199,201]},{"id":"E16","hex":"#FFF3EB","rgb":[255,243,235]},{"id":"E17","hex":"#FFE2EA","rgb":[255,226,234]},{"id":"E18","hex":"#FFC7DB","rgb":[255,199,219]},{"id":"E19","hex":"#FEBAD5","rgb":[254,186,213]},{"id":"E20","hex":"#D8C7D1","rgb":[216,199,209]},{"id":"E21","hex":"#BD9DA1","rgb":[189,157,161]},{"id":"E22","hex":"#B785A1","rgb":[183,133,161]},{"id":"E23","hex":"#937A8D","rgb":[147,122,141]},{"id":"E24","hex":"#E1BCE8","rgb":[225,188,232]},
+    /* F 系 25 色 */
+    {"id":"F1","hex":"#FD957B","rgb":[253,149,123]},{"id":"F2","hex":"#FC3D46","rgb":[252,61,70]},{"id":"F3","hex":"#F74941","rgb":[247,73,65]},{"id":"F4","hex":"#FC283C","rgb":[252,40,60]},{"id":"F5","hex":"#E7002F","rgb":[231,0,47]},{"id":"F6","hex":"#943630","rgb":[148,54,48]},{"id":"F7","hex":"#971937","rgb":[151,25,55]},{"id":"F8","hex":"#BC0028","rgb":[188,0,40]},{"id":"F9","hex":"#E2677A","rgb":[226,103,122]},{"id":"F10","hex":"#8A4526","rgb":[138,69,38]},{"id":"F11","hex":"#5A2121","rgb":[90,33,33]},{"id":"F12","hex":"#FD4E6A","rgb":[253,78,106]},{"id":"F13","hex":"#F35744","rgb":[243,87,68]},{"id":"F14","hex":"#FFA9AD","rgb":[255,169,173]},{"id":"F15","hex":"#D30022","rgb":[211,0,34]},{"id":"F16","hex":"#FEC2A6","rgb":[254,194,166]},{"id":"F17","hex":"#E69C79","rgb":[230,156,121]},{"id":"F18","hex":"#D37C46","rgb":[211,124,70]},{"id":"F19","hex":"#C1444A","rgb":[193,68,74]},{"id":"F20","hex":"#CD9391","rgb":[205,147,145]},{"id":"F21","hex":"#F7B4C6","rgb":[247,180,198]},{"id":"F22","hex":"#FDC0D0","rgb":[253,192,208]},{"id":"F23","hex":"#F67E66","rgb":[246,126,102]},{"id":"F24","hex":"#E698AA","rgb":[230,152,170]},{"id":"F25","hex":"#E54B4F","rgb":[229,75,79]},
+    /* G 系 21 色 */
+    {"id":"G1","hex":"#FFE2CE","rgb":[255,226,206]},{"id":"G2","hex":"#FFC4AA","rgb":[255,196,170]},{"id":"G3","hex":"#F4C3A5","rgb":[244,195,165]},{"id":"G4","hex":"#E1B383","rgb":[225,179,131]},{"id":"G5","hex":"#EDBD45","rgb":[237,189,69]},{"id":"G6","hex":"#E99C17","rgb":[233,156,23]},{"id":"G7","hex":"#9D583E","rgb":[157,88,62]},{"id":"G8","hex":"#753832","rgb":[117,56,50]},{"id":"G9","hex":"#E6B483","rgb":[230,180,131]},{"id":"G10","hex":"#D98C39","rgb":[217,140,57]},{"id":"G11","hex":"#E0C593","rgb":[224,197,147]},{"id":"G12","hex":"#FFC890","rgb":[255,200,144]},{"id":"G13","hex":"#B7714A","rgb":[183,113,74]},{"id":"G14","hex":"#8D614C","rgb":[141,97,76]},{"id":"G15","hex":"#FCF9E0","rgb":[252,249,224]},{"id":"G16","hex":"#F2D9BA","rgb":[242,217,186]},{"id":"G17","hex":"#78524B","rgb":[120,82,75]},{"id":"G18","hex":"#FFE4CC","rgb":[255,228,204]},{"id":"G19","hex":"#E07935","rgb":[224,121,53]},{"id":"G20","hex":"#A94023","rgb":[169,64,35]},{"id":"G21","hex":"#B88558","rgb":[184,133,88]},
+    /* H 系 23 色 */
+    {"id":"H1","hex":"#FDFBFF","rgb":[253,251,255]},{"id":"H2","hex":"#FEFFFF","rgb":[254,255,255]},{"id":"H3","hex":"#B6B1BA","rgb":[182,177,186]},{"id":"H4","hex":"#89858C","rgb":[137,133,140]},{"id":"H5","hex":"#48464E","rgb":[72,70,78]},{"id":"H6","hex":"#2F2B2F","rgb":[47,43,47]},{"id":"H7","hex":"#000000","rgb":[0,0,0]},{"id":"H8","hex":"#E7D6DB","rgb":[231,214,219]},{"id":"H9","hex":"#EDEDED","rgb":[237,237,237]},{"id":"H10","hex":"#EEE9EA","rgb":[238,233,234]},{"id":"H11","hex":"#CECDD5","rgb":[206,205,213]},{"id":"H12","hex":"#FFF5ED","rgb":[255,245,237]},{"id":"H13","hex":"#F5ECD2","rgb":[245,236,210]},{"id":"H14","hex":"#CFD7D3","rgb":[207,215,211]},{"id":"H15","hex":"#98A6A8","rgb":[152,166,168]},{"id":"H16","hex":"#1D1414","rgb":[29,20,20]},{"id":"H17","hex":"#F1EDED","rgb":[241,237,237]},{"id":"H18","hex":"#FFFDF0","rgb":[255,253,240]},{"id":"H19","hex":"#F6EFE2","rgb":[246,239,226]},{"id":"H20","hex":"#949FA3","rgb":[148,159,163]},{"id":"H21","hex":"#FFFBE1","rgb":[255,251,225]},{"id":"H22","hex":"#CACAD4","rgb":[202,202,212]},{"id":"H23","hex":"#9A9D94","rgb":[154,157,148]},
+    /* M 系 15 色 */
+    {"id":"M1","hex":"#BCC6B8","rgb":[188,198,184]},{"id":"M2","hex":"#8AA386","rgb":[138,163,134]},{"id":"M3","hex":"#697D80","rgb":[105,125,128]},{"id":"M4","hex":"#E3D2BC","rgb":[227,210,188]},{"id":"M5","hex":"#D0CCAA","rgb":[208,204,170]},{"id":"M6","hex":"#B0A782","rgb":[176,167,130]},{"id":"M7","hex":"#B4A497","rgb":[180,164,151]},{"id":"M8","hex":"#B38281","rgb":[179,130,129]},{"id":"M9","hex":"#A58767","rgb":[165,135,103]},{"id":"M10","hex":"#C5B2BC","rgb":[197,178,188]},{"id":"M11","hex":"#9F7594","rgb":[159,117,148]},{"id":"M12","hex":"#644749","rgb":[100,71,73]},{"id":"M13","hex":"#D19066","rgb":[209,144,102]},{"id":"M14","hex":"#C77362","rgb":[199,115,98]},{"id":"M15","hex":"#757D78","rgb":[117,125,120]}
+  ];
 
-/* ===== 图纸布局常量（renderPattern 与选择逻辑必须保持一致） ===== */
-const CELL = 30, LEFT = 48, TOP = 78;
+  /* ===== 图纸布局常量（renderPattern 与选择逻辑必须保持一致） ===== */
+  const CELL = 30, LEFT = 48, TOP = 78;
 
-let sourceImage=null, generatedCanvas=null, generatedBlobUrl=null, currentScale=.6;
-let currentResult = null;
-let editMode = 'global'; // 'global' | 'single' | 'selection'
-let editTarget = null;
+  let sourceImage=null, generatedCanvas=null, generatedBlobUrl=null, currentScale=.6;
+  let currentResult = null;
+  let editMode = 'global'; // 'global' | 'single' | 'selection'
+  let editTarget = null;
 
-/* ===== 选择状态 ===== */
-let currentImg = null;       // 当前预览 <img>
-let overlayCanvas = null;    // 选择高亮覆盖层
-let selectionActive = false;
-let selection = { startCol: 0, startRow: 0, endCol: 0, endRow: 0 };
-let dragging = false, dragMoved = false, dragStartX = 0, dragStartY = 0;
+  /* ===== 选择状态 ===== */
+  let currentImg = null;       // 当前预览 <img>
+  let overlayCanvas = null;    // 选择高亮覆盖层
+  let selectionActive = false;
+  let selection = { startCol: 0, startRow: 0, endCol: 0, endRow: 0 };
+  let dragging = false, dragMoved = false, dragStartX = 0, dragStartY = 0;
 
-const $=id=>document.getElementById(id);
-const fileInput=$('file'), stage=$('stage');
+  const $=id=>document.getElementById(id);
+  const fileInput=$('file'), stage=$('stage');
 
-// 事件监听
-$('colors').addEventListener('input',()=>{ $('colorVal').textContent=$('colors').value+' 色'; if(sourceImage) updateColorAudit(); });
-$('zoom').addEventListener('input',()=>{currentScale=+$('zoom').value/100;$('zoomVal').textContent=$('zoom').value+'%';showCanvas()});
-$('fit').onclick=()=>{if(!generatedCanvas)return;const available=stage.clientWidth-40;currentScale=Math.min(1,available/generatedCanvas.width);$('zoom').value=Math.round(currentScale*100);$('zoomVal').textContent=$('zoom').value+'%';showCanvas()};
-fileInput.addEventListener('change',e=>loadFile(e.target.files[0]));
+  // 事件监听
+  $('colors').addEventListener('input',()=>{ $('colorVal').textContent=$('colors').value+' 色'; });
+  $('zoom').addEventListener('input',()=>{currentScale=+$('zoom').value/100;$('zoomVal').textContent=$('zoom').value+'%';showCanvas()});
+  $('fit').onclick=()=>{if(!generatedCanvas)return;const available=stage.clientWidth-40;currentScale=Math.min(1,available/generatedCanvas.width);$('zoom').value=Math.round(currentScale*100);$('zoomVal').textContent=$('zoom').value+'%';showCanvas()};
+  fileInput.addEventListener('change',e=>loadFile(e.target.files[0]));
 
-function loadFile(file){if(!file)return;if(!file.type.startsWith('image/')){alert('请选择图片文件');return}const url=URL.createObjectURL(file);const im=new Image();im.onload=()=>{sourceImage=im;$('fileLabel').textContent=file.name;$('generate').disabled=false;
- $('sourcePreview').style.display='block';$('sourcePreviewImg').src=url;$('sourceDimensions').textContent=`原图尺寸：${im.naturalWidth} × ${im.naturalHeight} 像素`;
- stage.innerHTML='<div class="placeholder"><div class="symbol">✓</div><strong>图片已载入</strong><p>'+im.naturalWidth+' × '+im.naturalHeight+' 像素。点击生成图纸。</p></div>';
- currentImg = null; overlayCanvas = null;
- updateColorAudit();};im.src=url}
-const drop=$('file').previousElementSibling;
-['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.background='#eef2f7'}));
-['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.background=''}));
-drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
-function hexRgb(hex){return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]}
+  function loadFile(file){if(!file)return;if(!file.type.startsWith('image/')){alert('请选择图片文件');return}const url=URL.createObjectURL(file);const im=new Image();im.onload=()=>{sourceImage=im;$('fileLabel').textContent=file.name;$('generate').disabled=false;
+    $('sourcePreview').style.display='block';$('sourcePreviewImg').src=url;$('sourceDimensions').textContent=`原图尺寸：${im.naturalWidth} × ${im.naturalHeight} 像素`;
+    stage.innerHTML='<div class="placeholder"><div class="symbol">✓</div><strong>图片已载入</strong><p>'+im.naturalWidth+' × '+im.naturalHeight+' 像素。点击生成图纸。</p></div>';
+    currentImg = null; overlayCanvas = null;
+  };im.src=url}
+  const drop=$('file').previousElementSibling;
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.background='#eef2f7'}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.background=''}));
+  drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
 
-function rgbToLab(rgb){
- const lin=v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4)};
- let [r,g,b]=rgb.map(lin);
- let x=(r*0.4124564+g*0.3575761+b*0.1804375)/0.95047;
- let y=(r*0.2126729+g*0.7151522+b*0.0721750)/1.00000;
- let z=(r*0.0193339+g*0.1191920+b*0.9503041)/1.08883;
- const f=t=>t>0.008856451679?Math.cbrt(t):(7.787037*t+16/116);
- x=f(x);y=f(y);z=f(z);
- return [116*y-16,500*(x-y),200*(y-z)];
-}
-const LAB_CACHE=new Map();
-function dist(a,b){
- const keyA=a.join(','),keyB=b.join(',');
- let la=LAB_CACHE.get(keyA);if(!la){la=rgbToLab(a);LAB_CACHE.set(keyA,la)}
- let lb=LAB_CACHE.get(keyB);if(!lb){lb=rgbToLab(b);LAB_CACHE.set(keyB,lb)}
- return (la[0]-lb[0])**2+(la[1]-lb[1])**2+(la[2]-lb[2])**2;
-}
-function nearest(rgb,pal){let best=pal[0],d=Infinity;for(const p of pal){const q=dist(rgb,p.rgb);if(q<d){d=q;best=p}}return best}
-function rgbHex(rgb){return '#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase()}
+  function rgbToLab(rgb){
+    const lin=v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4)};
+    let [r,g,b]=rgb.map(lin);
+    let x=(r*0.4124564+g*0.3575761+b*0.1804375)/0.95047;
+    let y=(r*0.2126729+g*0.7151522+b*0.0721750)/1.00000;
+    let z=(r*0.0193339+g*0.1191920+b*0.9503041)/1.08883;
+    const f=t=>t>0.008856451679?Math.cbrt(t):(7.787037*t+16/116);
+    x=f(x);y=f(y);z=f(z);
+    return [116*y-16,500*(x-y),200*(y-z)];
+  }
+  const LAB_CACHE=new Map();
+  function dist(a,b){
+    const keyA=a.join(','),keyB=b.join(',');
+    let la=LAB_CACHE.get(keyA);if(!la){la=rgbToLab(a);LAB_CACHE.set(keyA,la)}
+    let lb=LAB_CACHE.get(keyB);if(!lb){lb=rgbToLab(b);LAB_CACHE.set(keyB,lb)}
+    return (la[0]-lb[0])**2+(la[1]-lb[1])**2+(la[2]-lb[2])**2;
+  }
+  function nearest(rgb,pal){let best=pal[0],d=Infinity;for(const p of pal){const q=dist(rgb,p.rgb);if(q<d){d=q;best=p}}return best}
+  function rgbHex(rgb){return '#'+rgb.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase()}
 
-function extractDominantColors(img, count){
- const maxSide=180, ratio=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
- const w=Math.max(1,Math.round(img.naturalWidth*ratio)),h=Math.max(1,Math.round(img.naturalHeight*ratio));
- const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,w,h);
- const d=ctx.getImageData(0,0,w,h).data, pixels=[];
- for(let i=0;i<d.length;i+=4){
-    const a=d[i+3]/255;
-    if(a < 0.1) continue; // 忽略透明像素
-    pixels.push([d[i]*a+255*(1-a),d[i+1]*a+255*(1-a),d[i+2]*a+255*(1-a)])
- }
- if(pixels.length === 0) return [];
- let boxes=[pixels.map((rgb,i)=>({rgb,i}))];
- while(boxes.length<count){
-  let bi=-1,bestRange=-1,axis=0;
-  for(let j=0;j<boxes.length;j++){if(boxes[j].length<2)continue;for(let k=0;k<3;k++){let vals=boxes[j].map(o=>o.rgb[k]),range=Math.max(...vals)-Math.min(...vals);if(range>bestRange){bestRange=range;bi=j;axis=k}}}
-  if(bi<0)break;
-  const box=boxes.splice(bi,1)[0].sort((a,b)=>a.rgb[axis]-b.rgb[axis]),mid=Math.floor(box.length/2);
-  boxes.push(box.slice(0,mid),box.slice(mid));
- }
- return boxes.map(box=>{let rgb=[0,0,0];box.forEach(o=>o.rgb.forEach((v,k)=>rgb[k]+=v));return {rgb:rgb.map(v=>Math.round(v/box.length)),pixels:box.length}}).sort((a,b)=>b.pixels-a.pixels);
-}
+  function buildGrid(img,longSide,k,dither){
+    const w=img.naturalWidth,h=img.naturalHeight, cols=w>=h?longSide:Math.max(1,Math.round(longSide*w/h)), rows=h>w?longSide:Math.max(1,Math.round(longSide*h/w));
+    const small=document.createElement('canvas');small.width=cols;small.height=rows;const sx=small.getContext('2d',{willReadFrequently:true});sx.drawImage(img,0,0,cols,rows);const data=sx.getImageData(0,0,cols,rows).data;
 
-function updateColorAudit(){
- if(!sourceImage)return;
- const n=Math.min(40,Math.max(2,+$('colors').value||24)), reps=extractDominantColors(sourceImage,n);
- const rows=reps.map((item,i)=>{const p=nearest(item.rgb,PALETTE),hex=rgbHex(item.rgb);
- return `<tr><td><span class="audit-swatch" style="background:${hex}"></span><span class="audit-hex">${hex}</span></td><td><span class="audit-swatch" style="background:${p.hex}"></span><b>${p.id}</b> <span class="audit-hex">(${p.hex})</span></td></tr>`}).join('');
- $('colorAudit').innerHTML=`<table class="audit-table"><thead><tr><th>原图代表色及 HEX</th><th>匹配 Mard 色号及 HEX</th></tr></thead><tbody>${rows}</tbody></table>`;
-}
+    let pixels=[];
+    for(let i=0;i<cols*rows;i++){
+      const a=data[i*4+3]/255;
+      pixels.push([data[i*4]*a+255*(1-a),data[i*4+1]*a+255*(1-a),data[i*4+2]*a+255*(1-a)])
+    }
+    let boxes=[pixels.map((rgb,i)=>({rgb,i}))];
+    while(boxes.length<k){let bi=-1,range=-1,axis=0;for(let j=0;j<boxes.length;j++){if(boxes[j].length<2)continue;for(let c=0;c<3;c++){let vals=boxes[j].map(o=>o.rgb[c]),r=Math.max(...vals)-Math.min(...vals);if(r>range){range=r;bi=j;axis=c}}}if(bi<0)break;let box=boxes.splice(bi,1)[0].sort((a,b)=>a.rgb[axis]-b.rgb[axis]),mid=Math.floor(box.length/2);boxes.push(box.slice(0,mid),box.slice(mid))}
+    let reps=boxes.map(b=>{let rgb=[0,0,0];b.forEach(o=>o.rgb.forEach((v,c)=>rgb[c]+=v));return rgb.map(v=>Math.round(v/b.length))});
+    let mapped=reps.map(rgb=>nearest(rgb,PALETTE));
+    let uniqueMapped=[];mapped.forEach(p=>{if(!uniqueMapped.some(q=>q.id===p.id))uniqueMapped.push(p)});
+    let grid=new Array(rows*cols),counts={};let err=pixels.map(p=>p.slice());
+    for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){let i=y*cols+x, rgb=err[i].map(v=>Math.max(0,Math.min(255,v)));
+      let ri=0,rd=Infinity;for(let j=0;j<reps.length;j++){const q=dist(rgb,reps[j]);if(q<rd){rd=q;ri=j}}
+      let p=mapped[ri];grid[i]=p;counts[p.id]=(counts[p.id]||0)+1;
+      if(dither){let delta=rgb.map((v,c)=>v-reps[ri][c]);for(const [dx,dy,f] of [[1,0,7/16],[-1,1,3/16],[0,1,5/16],[1,1,1/16]]){let xx=x+dx,yy=y+dy;if(xx>=0&&xx<cols&&yy<rows){let ni=yy*cols+xx;err[ni]=err[ni].map((v,c)=>Math.max(0,Math.min(255,v-delta[c]*f)))}}}
+    }
 
-function buildGrid(img,longSide,k,dither){
- const w=img.naturalWidth,h=img.naturalHeight, cols=w>=h?longSide:Math.max(1,Math.round(longSide*w/h)), rows=h>w?longSide:Math.max(1,Math.round(longSide*h/w));
- const small=document.createElement('canvas');small.width=cols;small.height=rows;const sx=small.getContext('2d',{willReadFrequently:true});sx.drawImage(img,0,0,cols,rows);const data=sx.getImageData(0,0,cols,rows).data;
- 
- let pixels=[];
- for(let i=0;i<cols*rows;i++){
-    const a=data[i*4+3]/255; 
-    pixels.push([data[i*4]*a+255*(1-a),data[i*4+1]*a+255*(1-a),data[i*4+2]*a+255*(1-a)])
- }
- let boxes=[pixels.map((rgb,i)=>({rgb,i}))];
- while(boxes.length<k){let bi=-1,range=-1,axis=0;for(let j=0;j<boxes.length;j++){if(boxes[j].length<2)continue;for(let c=0;c<3;c++){let vals=boxes[j].map(o=>o.rgb[c]),r=Math.max(...vals)-Math.min(...vals);if(r>range){range=r;bi=j;axis=c}}}if(bi<0)break;let box=boxes.splice(bi,1)[0].sort((a,b)=>a.rgb[axis]-b.rgb[axis]),mid=Math.floor(box.length/2);boxes.push(box.slice(0,mid),box.slice(mid))}
- let reps=boxes.map(b=>{let rgb=[0,0,0];b.forEach(o=>o.rgb.forEach((v,c)=>rgb[c]+=v));return rgb.map(v=>Math.round(v/b.length))});
- let mapped=reps.map(rgb=>nearest(rgb,PALETTE));
- let uniqueMapped=[];mapped.forEach(p=>{if(!uniqueMapped.some(q=>q.id===p.id))uniqueMapped.push(p)});
- let grid=new Array(rows*cols),counts={};let err=pixels.map(p=>p.slice());
- for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){let i=y*cols+x, rgb=err[i].map(v=>Math.max(0,Math.min(255,v)));
-   let ri=0,rd=Infinity;for(let j=0;j<reps.length;j++){const q=dist(rgb,reps[j]);if(q<rd){rd=q;ri=j}}
-   let p=mapped[ri];grid[i]=p;counts[p.id]=(counts[p.id]||0)+1;
-   if(dither){let delta=rgb.map((v,c)=>v-reps[ri][c]);for(const [dx,dy,f] of [[1,0,7/16],[-1,1,3/16],[0,1,5/16],[1,1,1/16]]){let xx=x+dx,yy=y+dy;if(xx>=0&&xx<cols&&yy<rows){let ni=yy*cols+xx;err[ni]=err[ni].map((v,c)=>Math.max(0,Math.min(255,v-delta[c]*f)))}}}
- }
+    // hiddenCells 按「格子索引」记录隐藏，不再按色号整体隐藏
+    return {cols,rows,grid,counts,used:uniqueMapped.filter(p=>counts[p.id]), reps, mapped, hiddenCells: new Set()};
+  }
 
- // hiddenCells 按「格子索引」记录隐藏，不再按色号整体隐藏
- return {cols,rows,grid,counts,used:uniqueMapped.filter(p=>counts[p.id]), reps, mapped, hiddenCells: new Set()};
-}
+  function renderPattern(result){
+    const cell = CELL, left = LEFT, top = TOP, right=22,bottom=150, width=left+result.cols*cell+right,height=top+result.rows*cell+bottom;
+    const c=document.createElement('canvas');c.width=width*2;c.height=height*2;const ctx=c.getContext('2d');ctx.scale(2,2);ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);
 
-function renderPattern(result){
- const cell = CELL, left = LEFT, top = TOP, right=22,bottom=150, width=left+result.cols*cell+right,height=top+result.rows*cell+bottom;
- const c=document.createElement('canvas');c.width=width*2;c.height=height*2;const ctx=c.getContext('2d');ctx.scale(2,2);ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);
- 
- // 计算可见豆子总数（按格子隐藏状态统计）
- let visiblePieces = 0;
- for(let i=0; i<result.grid.length; i++){
-     if(!result.hiddenCells.has(i)) visiblePieces++;
- }
+    // 计算可见豆子总数（按格子隐藏状态统计）
+    let visiblePieces = 0;
+    for(let i=0; i<result.grid.length; i++){
+      if(!result.hiddenCells.has(i)) visiblePieces++;
+    }
 
- ctx.fillStyle='#17202d';ctx.textAlign='center';ctx.font='bold 23px Arial,sans-serif';ctx.fillText(`拼豆图纸  ·  ${result.cols} × ${result.rows} 格`,width/2,30);
- ctx.font='14px Arial,sans-serif';ctx.fillText(`颜色 ${result.used.length} 种   ·   豆子总数 ${visiblePieces} 颗`,width/2,54);
- ctx.font='10px Arial,sans-serif';ctx.fillStyle='#333';ctx.textAlign='center';
- 
- // 画坐标轴和辅助线
- for(let x=0;x<result.cols;x++){let xx=left+x*cell+cell/2;if(x%5===0)ctx.fillText(String(x+1),xx,top-13);ctx.strokeStyle=x%5===0?'#c21f30':'#777';ctx.lineWidth=x%5===0?1.5:.6;ctx.beginPath();ctx.moveTo(left+x*cell,top-(x%5===0?9:4));ctx.lineTo(left+x*cell,top);ctx.stroke()}
- ctx.textAlign='right';for(let y=0;y<result.rows;y++){let yy=top+y*cell+cell/2+3;if(y%5===0)ctx.fillText(String(y+1),left-9,yy);ctx.strokeStyle=y%5===0?'#c21f30':'#777';ctx.lineWidth=y%5===0?1.5:.6;ctx.beginPath();ctx.moveTo(left-(y%5===0?9:4),top+y*cell);ctx.lineTo(left,top+y*cell);ctx.stroke()}
- 
- // 画格子内的颜色和色号
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`bold ${cell>=28?10:8}px Arial,sans-serif`;
- for(let y=0;y<result.rows;y++)for(let x=0;x<result.cols;x++){
-     const idx = y*result.cols+x;
-     let p=result.grid[idx];
-     if(result.hiddenCells.has(idx)) continue; // 该格子被隐藏，跳过绘制（留白，网格线仍保留）
-     
-     let xx=left+x*cell,yy=top+y*cell;
-     ctx.fillStyle=p.hex;ctx.fillRect(xx,yy,cell,cell);
-     
-     // 画色号文字
-     let [r,g,b]=p.rgb;
-     ctx.fillStyle=(.299*r+.587*g+.114*b)>145?'#111':'#fff';
-     ctx.fillText(p.id,xx+cell/2,yy+cell/2);
- }
- 
- // 画网格线
- for(let x=0;x<=result.cols;x++){ctx.beginPath();ctx.moveTo(left+x*cell,top);ctx.lineTo(left+x*cell,top+result.rows*cell);ctx.strokeStyle=x%5===0?'#c21f30':'#9da3aa';ctx.lineWidth=x%5===0?1.5:.45;ctx.stroke()}
- for(let y=0;y<=result.rows;y++){ctx.beginPath();ctx.moveTo(left,top+y*cell);ctx.lineTo(left+result.cols*cell,top+y*cell);ctx.strokeStyle=y%5===0?'#c21f30':'#9da3aa';ctx.lineWidth=y%5===0?1.5:.45;ctx.stroke()}
+    ctx.fillStyle='#17202d';ctx.textAlign='center';ctx.font='bold 23px Arial,sans-serif';ctx.fillText(`拼豆图纸  ·  ${result.cols} × ${result.rows} 格`,width/2,30);
+    ctx.font='14px Arial,sans-serif';ctx.fillText(`颜色 ${result.used.length} 种   ·   豆子总数 ${visiblePieces} 颗`,width/2,54);
+    ctx.font='10px Arial,sans-serif';ctx.fillStyle='#333';ctx.textAlign='center';
 
- // 底部图例
- const legendY=top+result.rows*cell+28;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#17202d';ctx.font='bold 15px Arial,sans-serif';ctx.fillText('颜色用量清单',left,legendY);
- const itemW=width>900?140:130, perRow=Math.max(1,Math.floor((width-left-right)/itemW));ctx.font='12px Arial,sans-serif';
- result.used.forEach((p,i)=>{const x=left+(i%perRow)*itemW,y=legendY+24+Math.floor(i/perRow)*22;ctx.fillStyle=p.hex;ctx.fillRect(x,y-12,14,14);ctx.strokeStyle='#5555';ctx.strokeRect(x,y-12,14,14);ctx.fillStyle='#222';ctx.fillText(`${p.id}  × ${result.counts[p.id]}`,x+20,y)})
- const needed=legendY+34+Math.ceil(result.used.length/perRow)*22+12;
- if(needed>height){const nc=document.createElement('canvas');nc.width=c.width;nc.height=needed*2;const nctx=nc.getContext('2d');nctx.fillStyle='#fff';nctx.fillRect(0,0,nc.width,nc.height);nctx.drawImage(c,0,0);return nc}
- return c;
-}
+    // 画坐标轴和辅助线
+    for(let x=0;x<result.cols;x++){let xx=left+x*cell+cell/2;if(x%5===0)ctx.fillText(String(x+1),xx,top-13);ctx.strokeStyle=x%5===0?'#c21f30':'#777';ctx.lineWidth=x%5===0?1.5:.6;ctx.beginPath();ctx.moveTo(left+x*cell,top-(x%5===0?9:4));ctx.lineTo(left+x*cell,top);ctx.stroke()}
+    ctx.textAlign='right';for(let y=0;y<result.rows;y++){let yy=top+y*cell+cell/2+3;if(y%5===0)ctx.fillText(String(y+1),left-9,yy);ctx.strokeStyle=y%5===0?'#c21f30':'#777';ctx.lineWidth=y%5===0?1.5:.6;ctx.beginPath();ctx.moveTo(left-(y%5===0?9:4),top+y*cell);ctx.lineTo(left,top+y*cell);ctx.stroke()}
 
-function renderLegend(result) {
-  const legend = $('legend');
-  legend.innerHTML = '';
-  $('legendTip').style.display = 'inline';
-  
-  result.used.forEach(p => {
-    const el = document.createElement('span');
-    el.className = 'chip';
-    el.title = '点击色块可全局替换';
-    el.innerHTML = `
+    // 画格子内的颜色和色号
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`bold ${cell>=28?10:8}px Arial,sans-serif`;
+    for(let y=0;y<result.rows;y++)for(let x=0;x<result.cols;x++){
+      const idx = y*result.cols+x;
+      let p=result.grid[idx];
+      if(result.hiddenCells.has(idx)) continue; // 该格子被隐藏，跳过绘制（留白，网格线仍保留）
+
+      let xx=left+x*cell,yy=top+y*cell;
+      ctx.fillStyle=p.hex;ctx.fillRect(xx,yy,cell,cell);
+
+      // 画色号文字
+      let [r,g,b]=p.rgb;
+      ctx.fillStyle=(.299*r+.587*g+.114*b)>145?'#111':'#fff';
+      ctx.fillText(p.id,xx+cell/2,yy+cell/2);
+    }
+
+    // 画网格线
+    for(let x=0;x<=result.cols;x++){ctx.beginPath();ctx.moveTo(left+x*cell,top);ctx.lineTo(left+x*cell,top+result.rows*cell);ctx.strokeStyle=x%5===0?'#c21f30':'#9da3aa';ctx.lineWidth=x%5===0?1.5:.45;ctx.stroke()}
+    for(let y=0;y<=result.rows;y++){ctx.beginPath();ctx.moveTo(left,top+y*cell);ctx.lineTo(left+result.cols*cell,top+y*cell);ctx.strokeStyle=y%5===0?'#c21f30':'#9da3aa';ctx.lineWidth=y%5===0?1.5:.45;ctx.stroke()}
+
+    // 底部图例
+    const legendY=top+result.rows*cell+28;ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#17202d';ctx.font='bold 15px Arial,sans-serif';ctx.fillText('颜色用量清单',left,legendY);
+    const itemW=width>900?140:130, perRow=Math.max(1,Math.floor((width-left-right)/itemW));ctx.font='12px Arial,sans-serif';
+    result.used.forEach((p,i)=>{const x=left+(i%perRow)*itemW,y=legendY+24+Math.floor(i/perRow)*22;ctx.fillStyle=p.hex;ctx.fillRect(x,y-12,14,14);ctx.strokeStyle='#5555';ctx.strokeRect(x,y-12,14,14);ctx.fillStyle='#222';ctx.fillText(`${p.id}  × ${result.counts[p.id]}`,x+20,y)})
+    const needed=legendY+34+Math.ceil(result.used.length/perRow)*22+12;
+    if(needed>height){const nc=document.createElement('canvas');nc.width=c.width;nc.height=needed*2;const nctx=nc.getContext('2d');nctx.fillStyle='#fff';nctx.fillRect(0,0,nc.width,nc.height);nctx.drawImage(c,0,0);return nc}
+    return c;
+  }
+
+  function renderLegend(result) {
+    const legend = $('legend');
+    legend.innerHTML = '';
+    $('legendTip').style.display = 'inline';
+
+    result.used.forEach(p => {
+      const el = document.createElement('span');
+      el.className = 'chip';
+      el.title = '点击色块可全局替换';
+      el.innerHTML = `
         <span class="swatch" style="background:${p.hex}"></span>
         <b>${p.id}</b><span>× ${result.counts[p.id]}</span>
         <span class="del-btn" title="智能隐藏：先隐藏与边缘连通的部分，再点一次隐藏剩余">×</span>
     `;
-    
-    el.onclick = (e) => {
+
+      el.onclick = (e) => {
         if (e.target.classList.contains('del-btn')) return;
         openColorPickerForGlobal(p.id);
-    };
-    
-    el.querySelector('.del-btn').onclick = (e) => {
+      };
+
+      el.querySelector('.del-btn').onclick = (e) => {
         e.stopPropagation();
         hideColorFromBorder(result, p.id);
         recomputeAndRender();
-    };
-    
-    legend.appendChild(el);
-  });
-}
+      };
 
-/* ===== 智能隐藏：优先隐藏与图纸边缘连通的同色格子 ===== */
-function hideColorFromBorder(result, colorId) {
+      legend.appendChild(el);
+    });
+  }
+
+  /* ===== 智能隐藏：优先隐藏与图纸边缘连通的同色格子 ===== */
+  function hideColorFromBorder(result, colorId) {
     const { cols, rows, grid, hiddenCells } = result;
 
     // 收集边界格子索引（上、下、左、右）
     const borderIdx = [];
     for (let x = 0; x < cols; x++) {
-        borderIdx.push(x);
-        borderIdx.push((rows - 1) * cols + x);
+      borderIdx.push(x);
+      borderIdx.push((rows - 1) * cols + x);
     }
     for (let y = 1; y < rows - 1; y++) {
-        borderIdx.push(y * cols);
-        borderIdx.push(y * cols + cols - 1);
+      borderIdx.push(y * cols);
+      borderIdx.push(y * cols + cols - 1);
     }
 
     // 只在「当前可见」的边界格子中找种子
     const seeds = borderIdx.filter(i => !hiddenCells.has(i) && grid[i].id === colorId);
 
     if (seeds.length === 0) {
-        // 该颜色不接触可见边界（或已经没有可见格子），则隐藏全部该色格子
-        grid.forEach((cell, idx) => {
-            if (cell.id === colorId) hiddenCells.add(idx);
-        });
-        return;
+      // 该颜色不接触可见边界（或已经没有可见格子），则隐藏全部该色格子
+      grid.forEach((cell, idx) => {
+        if (cell.id === colorId) hiddenCells.add(idx);
+      });
+      return;
     }
 
     // 从边缘种子出发 BFS，只穿过「可见且同色」的格子
     const visited = new Uint8Array(cols * rows);
     const queue = [];
     for (const i of seeds) {
-        if (!visited[i]) { visited[i] = 1; queue.push(i); }
+      if (!visited[i]) { visited[i] = 1; queue.push(i); }
     }
     while (queue.length) {
-        const i = queue.pop();
-        hiddenCells.add(i);
-        const x = i % cols, y = (i / cols) | 0;
-        const tryPush = (n) => {
-            if (!visited[n] && !hiddenCells.has(n) && grid[n].id === colorId) {
-                visited[n] = 1; queue.push(n);
-            }
-        };
-        if (x > 0) tryPush(i - 1);
-        if (x < cols - 1) tryPush(i + 1);
-        if (y > 0) tryPush(i - cols);
-        if (y < rows - 1) tryPush(i + cols);
+      const i = queue.pop();
+      hiddenCells.add(i);
+      const x = i % cols, y = (i / cols) | 0;
+      const tryPush = (n) => {
+        if (!visited[n] && !hiddenCells.has(n) && grid[n].id === colorId) {
+          visited[n] = 1; queue.push(n);
+        }
+      };
+      if (x > 0) tryPush(i - 1);
+      if (x < cols - 1) tryPush(i + 1);
+      if (y > 0) tryPush(i - cols);
+      if (y < rows - 1) tryPush(i + cols);
     }
-}
-
-/* ===== 坐标转换 / 选择逻辑 ===== */
-
-function getCellFromEvent(e, img) {
-  if (!img || !currentResult || !generatedCanvas) return null;
-  const rect = img.getBoundingClientRect();
-  if (!rect.width || !rect.height) return null;
-  const logicW = generatedCanvas.width / 2;
-  const logicH = generatedCanvas.height / 2;
-  const lx = (e.clientX - rect.left) / rect.width * logicW;
-  const ly = (e.clientY - rect.top) / rect.height * logicH;
-  return {
-    col: Math.floor((lx - LEFT) / CELL),
-    row: Math.floor((ly - TOP) / CELL)
-  };
-}
-
-function isValidCell(col, row) {
-  return currentResult && col >= 0 && col < currentResult.cols && row >= 0 && row < currentResult.rows;
-}
-
-function clampCell(col, row) {
-  const maxCol = currentResult ? currentResult.cols - 1 : 0;
-  const maxRow = currentResult ? currentResult.rows - 1 : 0;
-  return {
-    col: Math.max(0, Math.min(maxCol, col)),
-    row: Math.max(0, Math.min(maxRow, row))
-  };
-}
-
-function clearSelection() {
-  selectionActive = false;
-  dragging = false;
-  dragMoved = false;
-  drawOverlay();
-}
-
-function onStageMouseDown(e) {
-  if (!currentResult || !currentImg) return;
-  if (e.button !== 0) return;
-  const cell = getCellFromEvent(e, currentImg);
-  if (!cell || !isValidCell(cell.col, cell.row)) return;
-
-  e.preventDefault();
-  dragging = true;
-  dragMoved = false;
-  dragStartX = e.clientX;
-  dragStartY = e.clientY;
-  selection.startCol = cell.col;
-  selection.startRow = cell.row;
-  selection.endCol = cell.col;
-  selection.endRow = cell.row;
-  selectionActive = true;
-  drawOverlay();
-
-  document.addEventListener('mousemove', onStageMouseMove);
-  document.addEventListener('mouseup', onStageMouseUp);
-}
-
-function onStageMouseMove(e) {
-  if (!dragging) return;
-  if (!dragMoved) {
-    const dx = e.clientX - dragStartX, dy = e.clientY - dragStartY;
-    if (dx * dx + dy * dy < 25) return; // 5px 阈值
-    dragMoved = true;
   }
-  const cell = getCellFromEvent(e, currentImg);
-  if (!cell) return;
-  const c = clampCell(cell.col, cell.row);
-  if (c.col === selection.endCol && c.row === selection.endRow) return;
-  selection.endCol = c.col;
-  selection.endRow = c.row;
-  drawOverlay();
-  e.preventDefault();
-}
 
-function onStageMouseUp(e) {
-  if (!dragging) return;
-  dragging = false;
-  document.removeEventListener('mousemove', onStageMouseMove);
-  document.removeEventListener('mouseup', onStageMouseUp);
+  /* ===== 坐标转换 / 选择逻辑 ===== */
 
-  if (!currentResult) { clearSelection(); return; }
+  function getCellFromEvent(e, img) {
+    if (!img || !currentResult || !generatedCanvas) return null;
+    const rect = img.getBoundingClientRect();
+    if (!rect.width || !rect.height) return null;
+    const logicW = generatedCanvas.width / 2;
+    const logicH = generatedCanvas.height / 2;
+    const lx = (e.clientX - rect.left) / rect.width * logicW;
+    const ly = (e.clientY - rect.top) / rect.height * logicH;
+    return {
+      col: Math.floor((lx - LEFT) / CELL),
+      row: Math.floor((ly - TOP) / CELL)
+    };
+  }
 
-  if (!dragMoved) {
-    // 单击：单格改色
+  function isValidCell(col, row) {
+    return currentResult && col >= 0 && col < currentResult.cols && row >= 0 && row < currentResult.rows;
+  }
+
+  function clampCell(col, row) {
+    const maxCol = currentResult ? currentResult.cols - 1 : 0;
+    const maxRow = currentResult ? currentResult.rows - 1 : 0;
+    return {
+      col: Math.max(0, Math.min(maxCol, col)),
+      row: Math.max(0, Math.min(maxRow, row))
+    };
+  }
+
+  function clearSelection() {
+    selectionActive = false;
+    dragging = false;
+    dragMoved = false;
+    drawOverlay();
+  }
+
+  function onStageMouseDown(e) {
+    if (!currentResult || !currentImg) return;
+    if (e.button !== 0) return;
     const cell = getCellFromEvent(e, currentImg);
-    clearSelection();
-    if (cell && isValidCell(cell.col, cell.row)) {
-      const idx = cell.row * currentResult.cols + cell.col;
-      const p = currentResult.grid[idx];
-      openColorPickerForCell(cell.row, cell.col, p);
+    if (!cell || !isValidCell(cell.col, cell.row)) return;
+
+    e.preventDefault();
+    dragging = true;
+    dragMoved = false;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    selection.startCol = cell.col;
+    selection.startRow = cell.row;
+    selection.endCol = cell.col;
+    selection.endRow = cell.row;
+    selectionActive = true;
+    drawOverlay();
+
+    document.addEventListener('mousemove', onStageMouseMove);
+    document.addEventListener('mouseup', onStageMouseUp);
+  }
+
+  function onStageMouseMove(e) {
+    if (!dragging) return;
+    if (!dragMoved) {
+      const dx = e.clientX - dragStartX, dy = e.clientY - dragStartY;
+      if (dx * dx + dy * dy < 25) return; // 5px 阈值
+      dragMoved = true;
     }
-    return;
+    const cell = getCellFromEvent(e, currentImg);
+    if (!cell) return;
+    const c = clampCell(cell.col, cell.row);
+    if (c.col === selection.endCol && c.row === selection.endRow) return;
+    selection.endCol = c.col;
+    selection.endRow = c.row;
+    drawOverlay();
+    e.preventDefault();
   }
 
-  // 拖拽：批量改色
-  const c1 = clampCell(selection.startCol, selection.startRow);
-  const c2 = clampCell(selection.endCol, selection.endRow);
-  const col1 = Math.min(c1.col, c2.col), col2 = Math.max(c1.col, c2.col);
-  const r1 = Math.min(c1.row, c2.row), r2 = Math.max(c1.row, c2.row);
+  function onStageMouseUp(e) {
+    if (!dragging) return;
+    dragging = false;
+    document.removeEventListener('mousemove', onStageMouseMove);
+    document.removeEventListener('mouseup', onStageMouseUp);
 
-  openColorPickerForSelection(r1, r2, col1, col2);
-}
+    if (!currentResult) { clearSelection(); return; }
 
-function drawOverlay() {
-  if (!overlayCanvas || !currentResult) return;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const cw = parseFloat(overlayCanvas.style.width) || 0;
-  const ch = parseFloat(overlayCanvas.style.height) || 0;
-  if (!cw || !ch) return;
+    if (!dragMoved) {
+      // 单击：单格改色
+      const cell = getCellFromEvent(e, currentImg);
+      clearSelection();
+      if (cell && isValidCell(cell.col, cell.row)) {
+        const idx = cell.row * currentResult.cols + cell.col;
+        const p = currentResult.grid[idx];
+        openColorPickerForCell(cell.row, cell.col, p);
+      }
+      return;
+    }
 
-  const pw = Math.max(1, Math.round(cw * dpr));
-  const ph = Math.max(1, Math.round(ch * dpr));
-  if (overlayCanvas.width !== pw || overlayCanvas.height !== ph) {
-    overlayCanvas.width = pw;
-    overlayCanvas.height = ph;
+    // 拖拽：批量改色
+    const c1 = clampCell(selection.startCol, selection.startRow);
+    const c2 = clampCell(selection.endCol, selection.endRow);
+    const col1 = Math.min(c1.col, c2.col), col2 = Math.max(c1.col, c2.col);
+    const r1 = Math.min(c1.row, c2.row), r2 = Math.max(c1.row, c2.row);
+
+    openColorPickerForSelection(r1, r2, col1, col2);
   }
 
-  const octx = overlayCanvas.getContext('2d');
-  octx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  octx.clearRect(0, 0, cw, ch);
+  function drawOverlay() {
+    if (!overlayCanvas || !currentResult) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cw = parseFloat(overlayCanvas.style.width) || 0;
+    const ch = parseFloat(overlayCanvas.style.height) || 0;
+    if (!cw || !ch) return;
 
-  if (!selectionActive) return;
+    const pw = Math.max(1, Math.round(cw * dpr));
+    const ph = Math.max(1, Math.round(ch * dpr));
+    if (overlayCanvas.width !== pw || overlayCanvas.height !== ph) {
+      overlayCanvas.width = pw;
+      overlayCanvas.height = ph;
+    }
 
-  const s = currentScale;
-  const c1 = clampCell(selection.startCol, selection.startRow);
-  const c2 = clampCell(selection.endCol, selection.endRow);
-  const col1 = Math.min(c1.col, c2.col), col2 = Math.max(c1.col, c2.col);
-  const r1 = Math.min(c1.row, c2.row), r2 = Math.max(c1.row, c2.row);
+    const octx = overlayCanvas.getContext('2d');
+    octx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    octx.clearRect(0, 0, cw, ch);
 
-  const x = (LEFT + col1 * CELL) * s;
-  const y = (TOP + r1 * CELL) * s;
-  const w = (col2 - col1 + 1) * CELL * s;
-  const h = (r2 - r1 + 1) * CELL * s;
+    if (!selectionActive) return;
 
-  octx.fillStyle = 'rgba(180, 35, 47, 0.22)';
-  octx.fillRect(x, y, w, h);
-  octx.strokeStyle = '#b4232f';
-  octx.lineWidth = 2;
-  octx.strokeRect(x + 1, y + 1, Math.max(0, w - 2), Math.max(0, h - 2));
+    const s = currentScale;
+    const c1 = clampCell(selection.startCol, selection.startRow);
+    const c2 = clampCell(selection.endCol, selection.endRow);
+    const col1 = Math.min(c1.col, c2.col), col2 = Math.max(c1.col, c2.col);
+    const r1 = Math.min(c1.row, c2.row), r2 = Math.max(c1.row, c2.row);
 
-  const count = (col2 - col1 + 1) * (r2 - r1 + 1);
-  if (count > 1) {
-    const text = `${count} 格`;
-    octx.font = 'bold 13px system-ui, sans-serif';
-    const tw = octx.measureText(text).width + 14;
-    const th = 20;
-    let tx = x + w / 2 - tw / 2;
-    let ty = y - th - 6;
-    if (ty < 4) ty = y + h + 6;
-    if (ty + th > ch - 4) ty = ch - th - 4;
-    tx = Math.max(4, Math.min(cw - tw - 4, tx));
-    octx.fillStyle = '#b4232f';
-    octx.fillRect(tx, ty, tw, th);
-    octx.fillStyle = '#fff';
-    octx.textAlign = 'center';
-    octx.textBaseline = 'middle';
-    octx.fillText(text, tx + tw / 2, ty + th / 2);
+    const x = (LEFT + col1 * CELL) * s;
+    const y = (TOP + r1 * CELL) * s;
+    const w = (col2 - col1 + 1) * CELL * s;
+    const h = (r2 - r1 + 1) * CELL * s;
+
+    octx.fillStyle = 'rgba(180, 35, 47, 0.22)';
+    octx.fillRect(x, y, w, h);
+    octx.strokeStyle = '#b4232f';
+    octx.lineWidth = 2;
+    octx.strokeRect(x + 1, y + 1, Math.max(0, w - 2), Math.max(0, h - 2));
+
+    const count = (col2 - col1 + 1) * (r2 - r1 + 1);
+    if (count > 1) {
+      const text = `${count} 格`;
+      octx.font = 'bold 13px system-ui, sans-serif';
+      const tw = octx.measureText(text).width + 14;
+      const th = 20;
+      let tx = x + w / 2 - tw / 2;
+      let ty = y - th - 6;
+      if (ty < 4) ty = y + h + 6;
+      if (ty + th > ch - 4) ty = ch - th - 4;
+      tx = Math.max(4, Math.min(cw - tw - 4, tx));
+      octx.fillStyle = '#b4232f';
+      octx.fillRect(tx, ty, tw, th);
+      octx.fillStyle = '#fff';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.fillText(text, tx + tw / 2, ty + th / 2);
+    }
   }
-}
 
-/* ===== 颜色选择器 ===== */
+  /* ===== 颜色选择器 ===== */
 
-function openColorPickerForGlobal(oldId) {
-  editMode = 'global';
-  editTarget = oldId;
-  buildColorPickerUI(`选择新颜色替换全局 ${oldId}`);
-}
+  function openColorPickerForGlobal(oldId) {
+    editMode = 'global';
+    editTarget = oldId;
+    buildColorPickerUI(`选择新颜色替换全局 ${oldId}`);
+  }
 
-function openColorPickerForCell(row, col, currentColor) {
-  editMode = 'single';
-  editTarget = { row, col };
-  buildColorPickerUI(`修改格子 (行 ${row+1}, 列 ${col+1}) 颜色，当前：${currentColor.id}`);
-}
+  function openColorPickerForCell(row, col, currentColor) {
+    editMode = 'single';
+    editTarget = { row, col };
+    buildColorPickerUI(`修改格子 (行 ${row+1}, 列 ${col+1}) 颜色，当前：${currentColor.id}`);
+  }
 
-function openColorPickerForSelection(r1, r2, col1, col2) {
-  editMode = 'selection';
-  editTarget = { r1, r2, col1, col2 };
-  const count = (r2 - r1 + 1) * (col2 - col1 + 1);
-  buildColorPickerUI(`修改选中的 ${count} 个格子（行 ${r1+1}-${r2+1}，列 ${col1+1}-${col2+1}）`);
-}
+  function openColorPickerForSelection(r1, r2, col1, col2) {
+    editMode = 'selection';
+    editTarget = { r1, r2, col1, col2 };
+    const count = (r2 - r1 + 1) * (col2 - col1 + 1);
+    buildColorPickerUI(`修改选中的 ${count} 个格子（行 ${r1+1}-${r2+1}，列 ${col1+1}-${col2+1}）`);
+  }
 
-function buildColorPickerUI(title) {
-  $('modal').style.display = 'flex';
-  $('modalTitle').textContent = title;
-  const grid = $('paletteGrid');
-  grid.innerHTML = '';
-  PALETTE.forEach(p => {
-    const item = document.createElement('div');
-    item.className = 'palette-item';
-    item.innerHTML = `<div class="p-color" style="background:${p.hex}"></div><div class="p-id">${p.id}</div>`;
-    item.onclick = () => applyColor(p);
-    grid.appendChild(item);
-  });
-}
-
-function closeColorPicker() {
-  $('modal').style.display = 'none';
-  clearSelection();
-}
-
-function applyColor(newSwatch) {
-  if (!currentResult) return;
-
-  if (editMode === 'global') {
-    const oldId = editTarget;
-    if (oldId === newSwatch.id) { closeColorPicker(); return; }
-    // 全局替换：可见格子与隐藏格子一并替换颜色数据，但隐藏状态保持不变
-    currentResult.grid = currentResult.grid.map(cell => {
-      if (cell.id === oldId) return newSwatch;
-      return cell;
+  function buildColorPickerUI(title) {
+    $('modal').style.display = 'flex';
+    $('modalTitle').textContent = title;
+    const grid = $('paletteGrid');
+    grid.innerHTML = '';
+    PALETTE.forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'palette-item';
+      item.innerHTML = `<div class="p-color" style="background:${p.hex}"></div><div class="p-id">${p.id}</div>`;
+      item.onclick = () => applyColor(p);
+      grid.appendChild(item);
     });
-  } else if (editMode === 'single') {
-    const idx = editTarget.row * currentResult.cols + editTarget.col;
-    currentResult.grid[idx] = newSwatch;
-    // 显式改色的格子恢复显示
-    currentResult.hiddenCells.delete(idx);
-  } else if (editMode === 'selection') {
-    const { r1, r2, col1, col2 } = editTarget;
-    for (let r = r1; r <= r2; r++) {
-      for (let c = col1; c <= col2; c++) {
-        const idx = r * currentResult.cols + c;
-        currentResult.grid[idx] = newSwatch;
-        // 显式改色的格子恢复显示
-        currentResult.hiddenCells.delete(idx);
+  }
+
+  function closeColorPicker() {
+    $('modal').style.display = 'none';
+    clearSelection();
+  }
+
+  function applyColor(newSwatch) {
+    if (!currentResult) return;
+
+    if (editMode === 'global') {
+      const oldId = editTarget;
+      if (oldId === newSwatch.id) { closeColorPicker(); return; }
+      // 全局替换：可见格子与隐藏格子一并替换颜色数据，但隐藏状态保持不变
+      currentResult.grid = currentResult.grid.map(cell => {
+        if (cell.id === oldId) return newSwatch;
+        return cell;
+      });
+    } else if (editMode === 'single') {
+      const idx = editTarget.row * currentResult.cols + editTarget.col;
+      currentResult.grid[idx] = newSwatch;
+      // 显式改色的格子恢复显示
+      currentResult.hiddenCells.delete(idx);
+    } else if (editMode === 'selection') {
+      const { r1, r2, col1, col2 } = editTarget;
+      for (let r = r1; r <= r2; r++) {
+        for (let c = col1; c <= col2; c++) {
+          const idx = r * currentResult.cols + c;
+          currentResult.grid[idx] = newSwatch;
+          // 显式改色的格子恢复显示
+          currentResult.hiddenCells.delete(idx);
+        }
       }
     }
+
+    selectionActive = false;
+    recomputeAndRender();
+    closeColorPicker();
   }
 
-  selectionActive = false;
-  recomputeAndRender();
-  closeColorPicker();
-}
+  function recomputeAndRender() {
+    selectionActive = false;
+    currentResult.counts = {};
+    let visiblePieces = 0;
 
-function recomputeAndRender() {
-  selectionActive = false;
-  currentResult.counts = {};
-  let visiblePieces = 0;
-
-  // 只统计未被隐藏的格子（按格子索引判断）
-  currentResult.grid.forEach((p, idx) => {
-    if (!currentResult.hiddenCells.has(idx)) {
+    // 只统计未被隐藏的格子（按格子索引判断）
+    currentResult.grid.forEach((p, idx) => {
+      if (!currentResult.hiddenCells.has(idx)) {
         currentResult.counts[p.id] = (currentResult.counts[p.id] || 0) + 1;
         visiblePieces++;
-    }
-  });
+      }
+    });
 
-  const usedIds = Object.keys(currentResult.counts);
-  currentResult.used = usedIds.map(id => PALETTE.find(p => p.id === id)).filter(Boolean);
-  currentResult.used.sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
+    const usedIds = Object.keys(currentResult.counts);
+    currentResult.used = usedIds.map(id => PALETTE.find(p => p.id === id)).filter(Boolean);
+    currentResult.used.sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
 
-  generatedCanvas = renderPattern(currentResult);
-  renderLegend(currentResult);
-  showCanvas();
+    generatedCanvas = renderPattern(currentResult);
+    renderLegend(currentResult);
+    showCanvas();
 
-  $('statColors').textContent = currentResult.used.length;
-  $('statCount').textContent = visiblePieces.toLocaleString();
-  $('previewInfo').textContent = `${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
-}
+    $('statColors').textContent = currentResult.used.length;
+    $('statCount').textContent = visiblePieces.toLocaleString();
+    $('previewInfo').textContent = `${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
+  }
 
-$('generate').onclick=()=>{
- if(!sourceImage)return;
- $('generate').disabled=true;$('generate').textContent='正在生成…';
- setTimeout(()=>{try{
-   currentResult = buildGrid(sourceImage,+$('size').value,+$('colors').value,$('dither').checked);
-   generatedCanvas = renderPattern(currentResult);
+  $('generate').onclick=()=>{
+    if(!sourceImage)return;
+    $('generate').disabled=true;$('generate').textContent='正在生成…';
+    setTimeout(()=>{try{
+      currentResult = buildGrid(sourceImage,+$('size').value,+$('colors').value,$('dither').checked);
+      generatedCanvas = renderPattern(currentResult);
 
-   $('statSize').textContent=currentResult.cols+'×'+currentResult.rows;
-   $('statColors').textContent=currentResult.used.length;
-   const visiblePieces = currentResult.grid.filter((p, idx) => !currentResult.hiddenCells.has(idx)).length;
-   $('statCount').textContent=visiblePieces.toLocaleString();
-   $('previewInfo').textContent=`${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
+      $('statSize').textContent=currentResult.cols+'×'+currentResult.rows;
+      $('statColors').textContent=currentResult.used.length;
+      const visiblePieces = currentResult.grid.filter((p, idx) => !currentResult.hiddenCells.has(idx)).length;
+      $('statCount').textContent=visiblePieces.toLocaleString();
+      $('previewInfo').textContent=`${currentResult.cols} 列 × ${currentResult.rows} 行 · ${currentResult.used.length} 个 Mard 色号 · 拖动框选批量改色`;
 
-   currentResult.used.sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
-   renderLegend(currentResult);
+      currentResult.used.sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
+      renderLegend(currentResult);
 
-   $('export').disabled=false;
-   currentScale=Math.min(.6,(stage.clientWidth-40)/generatedCanvas.width);
-   $('zoom').value=Math.round(currentScale*100);$('zoomVal').textContent=$('zoom').value+'%';
-   showCanvas();
- }catch(e){console.error(e);alert('生成失败：'+e.message)}finally{$('generate').disabled=false;$('generate').textContent='生成拼豆图纸'}},30)
-};
+      $('export').disabled=false;
+      currentScale=Math.min(.6,(stage.clientWidth-40)/generatedCanvas.width);
+      $('zoom').value=Math.round(currentScale*100);$('zoomVal').textContent=$('zoom').value+'%';
+      showCanvas();
+    }catch(e){console.error(e);alert('生成失败：'+e.message)}finally{$('generate').disabled=false;$('generate').textContent='生成拼豆图纸'}},30)
+  };
 
-/* ===== 渲染预览（img + 选择覆盖层） ===== */
-function showCanvas() {
-  if (!generatedCanvas) return;
-  if (generatedBlobUrl) URL.revokeObjectURL(generatedBlobUrl);
-  generatedCanvas.toBlob(blob => {
-    generatedBlobUrl = URL.createObjectURL(blob);
-    stage.innerHTML = '';
+  /* ===== 渲染预览（img + 选择覆盖层） ===== */
+  function showCanvas() {
+    if (!generatedCanvas) return;
+    if (generatedBlobUrl) URL.revokeObjectURL(generatedBlobUrl);
+    generatedCanvas.toBlob(blob => {
+      generatedBlobUrl = URL.createObjectURL(blob);
+      stage.innerHTML = '';
 
-    const wrap = document.createElement('div');
-    wrap.className = 'stage-wrap';
+      const wrap = document.createElement('div');
+      wrap.className = 'stage-wrap';
 
-    const im = document.createElement('img');
-    im.src = generatedBlobUrl;
-    const displayW = generatedCanvas.width / 2 * currentScale;
-    const displayH = generatedCanvas.height / 2 * currentScale;
-    im.style.width = displayW + 'px';
-    im.style.height = displayH + 'px';
-    im.draggable = false;
-    im.alt = '拼豆图纸';
+      const im = document.createElement('img');
+      im.src = generatedBlobUrl;
+      const displayW = generatedCanvas.width / 2 * currentScale;
+      const displayH = generatedCanvas.height / 2 * currentScale;
+      im.style.width = displayW + 'px';
+      im.style.height = displayH + 'px';
+      im.draggable = false;
+      im.alt = '拼豆图纸';
 
-    const ov = document.createElement('canvas');
-    ov.className = 'overlay';
-    ov.style.width = displayW + 'px';
-    ov.style.height = displayH + 'px';
+      const ov = document.createElement('canvas');
+      ov.className = 'overlay';
+      ov.style.width = displayW + 'px';
+      ov.style.height = displayH + 'px';
 
-    wrap.appendChild(im);
-    wrap.appendChild(ov);
-    stage.appendChild(wrap);
+      wrap.appendChild(im);
+      wrap.appendChild(ov);
+      stage.appendChild(wrap);
 
-    currentImg = im;
-    overlayCanvas = ov;
+      currentImg = im;
+      overlayCanvas = ov;
 
-    im.addEventListener('mousedown', onStageMouseDown);
-    drawOverlay();
-  }, 'image/png');
-}
+      im.addEventListener('mousedown', onStageMouseDown);
+      drawOverlay();
+    }, 'image/png');
+  }
 
-$('export').onclick=()=>{if(!generatedCanvas)return;generatedCanvas.toBlob(blob=>{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Mard221_拼豆图纸.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)},'image/png')};
+  $('export').onclick=()=>{if(!generatedCanvas)return;generatedCanvas.toBlob(blob=>{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Mard221_拼豆图纸.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)},'image/png')};
 </script></body></html>
